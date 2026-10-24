@@ -3,244 +3,481 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>בחירות 2026 · תוצאות בשידור חי</title>
-<meta name="description" content="תוצאות הבחירות לכנסת ה-26 בשידור חי: מנדטים, אחוזי הצבעה והדרך ל-61">
+<title>בחירות 2026 · שידור חי</title>
+<meta name="description" content="הבחירות לכנסת ה-26: תוצאות בשידור חי, מדגמי הערוצים, סקרים אחרונים ותוצאות לפי יישובים">
 <style>
-:root{--bg:#050a18;--p1:#0c1630;--p2:#111f42;--line:#22345f;--tx:#f3f6fd;--mut:#8fa0c4;--gold:#f2c14e;--red:#ff3b4e;--blue:#3d7bff}
+:root{--bg:#050a18;--p1:#0b1530;--p2:#101e42;--line:#22345f;--tx:#f3f6fd;--mut:#8fa0c4;--gold:#f2c14e;--red:#ff3b4e;--blue:#3d7bff}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg)}
 body{color:var(--tx);font-family:"Heebo","Segoe UI",Arial,sans-serif;line-height:1.35;overflow-x:hidden;
  background:radial-gradient(900px 500px at 15% -5%,#16306f66,transparent 60%),radial-gradient(800px 500px at 100% 10%,#5b1d4a44,transparent 60%),var(--bg)}
-/* top bar */
-.top{display:flex;align-items:stretch;background:linear-gradient(90deg,#0a1330,#122a66);border-bottom:3px solid var(--gold);box-shadow:0 6px 30px #0008}
-.brand{background:var(--gold);color:#1a1200;padding:10px 22px;font-weight:900;font-size:clamp(15px,3.2vw,24px);display:flex;align-items:center;letter-spacing:.5px;clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%);padding-inline-end:36px}
-.ttl{flex:1;padding:8px 18px;display:flex;flex-direction:column;justify-content:center}
-.ttl b{font-size:clamp(17px,3.6vw,28px);font-weight:800}
-.ttl small{color:var(--mut);font-size:clamp(11px,2.2vw,14px)}
-.live{display:flex;align-items:center;gap:8px;padding:0 20px;font-weight:900;font-size:clamp(13px,2.6vw,18px);background:#0006}
+.top{display:flex;align-items:stretch;background:linear-gradient(90deg,#0a1330,#122a66);border-bottom:3px solid var(--gold);box-shadow:0 6px 30px #0008;position:sticky;top:0;z-index:20}
+.brand{background:var(--gold);color:#1a1200;padding:10px 22px;padding-inline-end:36px;font-weight:900;font-size:clamp(14px,3vw,24px);display:flex;align-items:center;clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%)}
+.ttl{flex:1;padding:8px 16px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.ttl b{font-size:clamp(14px,3.2vw,26px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl small{color:var(--mut);font-size:clamp(11px,2vw,14px)}
+.live{display:flex;align-items:center;gap:8px;padding:0 18px;font-weight:900;font-size:clamp(13px,2.4vw,18px);background:#0006;white-space:nowrap}
 .live i{width:12px;height:12px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:bl 1.1s infinite}
 .live.demo i{background:var(--gold);box-shadow:0 0 12px var(--gold)}
 @keyframes bl{50%{opacity:.2}}
-.clock{display:flex;align-items:center;padding:0 18px;font-variant-numeric:tabular-nums;font-weight:700;border-inline-start:1px solid var(--line);font-size:clamp(13px,2.6vw,18px)}
-@media(max-width:560px){.clock{display:none}.ttl small{display:none}.ttl b{font-size:13px}.brand{padding:8px 12px;padding-inline-end:24px;font-size:14px}.live{padding:0 10px}}
-.wrap{max-width:1180px;margin:0 auto;padding:16px}
-.demo-note{background:linear-gradient(90deg,#3a2a05,#2a1f05);border:1px solid #7a5a12;color:#ffd98a;border-radius:10px;padding:9px 14px;margin-bottom:14px;font-size:14px;text-align:center}
-.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
-@media(max-width:860px){.grid{grid-template-columns:1fr}}
-.panel{background:linear-gradient(180deg,var(--p2),var(--p1));border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 40px #0006}
-.panel h2{font-size:15px;color:var(--gold);letter-spacing:1px;font-weight:800;margin-bottom:8px;text-transform:uppercase}
-/* hemicycle */
+.clock{display:flex;align-items:center;padding:0 16px;font-variant-numeric:tabular-nums;font-weight:700;border-inline-start:1px solid var(--line);font-size:clamp(13px,2.4vw,18px)}
+@media(max-width:600px){.clock,.ttl small{display:none}.brand{padding:8px 10px;padding-inline-end:22px}.live{padding:0 10px}}
+.wrap{max-width:1240px;margin:0 auto;padding:14px 16px}
+.demo-note{background:linear-gradient(90deg,#3a2a05,#2a1f05);border:1px solid #7a5a12;color:#ffd98a;border-radius:10px;padding:9px 14px;margin-bottom:12px;font-size:14px;text-align:center}
+.modebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tabs button{white-space:nowrap}
+button{font:inherit;font-weight:700;background:#14224a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer}
+button.on{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+.seg{display:flex;gap:6px}
+.view{display:none}.view.on{display:block;animation:fi .35s}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}}
+.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+.panel{background:linear-gradient(180deg,var(--p2),var(--p1));border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 40px #0006;position:relative;overflow:hidden;margin-bottom:14px}
+.panel h2{font-size:15px;color:var(--gold);letter-spacing:.5px;font-weight:800;margin-bottom:10px}
+.panel .src{color:var(--mut);font-size:12px;margin-top:8px}
+.wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:3}
+.wm span{transform:rotate(-18deg);font-size:clamp(34px,8vw,80px);font-weight:900;color:#ffffff10;border:4px solid #ffffff10;padding:4px 24px;border-radius:14px;white-space:nowrap}
+body.islive .wm{display:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:#0a1432;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat b{display:block;font-size:clamp(22px,4.4vw,34px);font-weight:900;font-variant-numeric:tabular-nums}
+.stat small{color:var(--mut);font-size:12px}
+.bar{height:6px;background:#050b1c;border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));transition:width .8s}
 .hemiwrap{position:relative}
 #hemi{width:100%;height:auto;display:block}
 .center{position:absolute;inset-inline:0;bottom:2%;text-align:center;pointer-events:none}
-.center b{display:block;font-size:clamp(46px,10vw,88px);font-weight:900;line-height:1;text-shadow:0 0 30px #3d7bff88}
-.center small{color:var(--mut);font-size:clamp(12px,2.4vw,16px)}
-/* road to 61 */
-.road{margin-top:14px}
-.roadbar{position:relative;height:34px;border-radius:17px;background:#060d20;border:1px solid var(--line);display:flex;overflow:hidden}
+.center b{display:block;font-size:clamp(44px,10vw,86px);font-weight:900;line-height:1;text-shadow:0 0 30px #3d7bff88}
+.center small{color:var(--mut);font-size:clamp(12px,2.4vw,15px)}
+.roadbar{position:relative;height:36px;border-radius:18px;background:#060d20;border:1px solid var(--line);display:flex;overflow:hidden}
 .roadbar span{height:100%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#0a0f1e;transition:width .8s cubic-bezier(.2,.8,.2,1);white-space:nowrap}
 .mark{position:absolute;top:-6px;bottom:-6px;width:3px;background:#fff;box-shadow:0 0 10px #fff;inset-inline-start:50.83%}
-.marklbl{display:flex;justify-content:center;margin-top:4px;color:var(--mut);font-size:12px}
-.blocs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+.marklbl{text-align:center;margin-top:4px;color:var(--mut);font-size:12px}
+.blocs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
 .bloc{border-radius:12px;padding:8px 12px;border:1px solid}
 .bloc small{display:block;font-size:12px;color:var(--mut)}
 .bloc b{font-size:34px;font-weight:900;line-height:1.1}
 .bloc em{font-style:normal;font-size:12px;font-weight:800;margin-inline-start:6px}
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:#0a1432;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.stat b{display:block;font-size:clamp(22px,4.6vw,34px);font-weight:900;font-variant-numeric:tabular-nums}
-.stat small{color:var(--mut);font-size:12px}
-.bar{height:6px;background:#050b1c;border-radius:4px;margin-top:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));transition:width .8s}
-/* party rows */
-.row{display:grid;grid-template-columns:8px 1fr auto;gap:12px;align-items:center;padding:9px 12px;margin-bottom:8px;border-radius:12px;background:#0a1432;border:1px solid var(--line);transition:transform .6s,opacity .4s}
+.row{display:grid;grid-template-columns:8px 1fr auto;gap:12px;align-items:center;padding:8px 12px;margin-bottom:7px;border-radius:12px;background:#0a1432;border:1px solid var(--line)}
 .row .cb{align-self:stretch;border-radius:4px}
-.nm{font-weight:800;font-size:17px}
+.nm{font-weight:800;font-size:16px}
 .nm small{color:var(--mut);font-weight:500;margin-inline-start:8px;font-size:12px}
 .sub{display:flex;gap:10px;color:var(--mut);font-size:12.5px;margin-top:2px;font-variant-numeric:tabular-nums}
-.tr{height:6px;background:#050b1c;border-radius:4px;margin-top:6px;overflow:hidden}
+.tr{height:6px;background:#050b1c;border-radius:4px;margin-top:5px;overflow:hidden}
 .tr i{display:block;height:100%;transition:width .8s}
-.seats{min-width:58px;text-align:center;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
-.seats small{display:block;font-size:10px;color:var(--mut);font-weight:600;letter-spacing:1px}
-.row.out{opacity:.5}.row.out .seats{color:var(--mut);font-size:22px}
-/* ticker */
-.ticker{position:sticky;bottom:0;display:flex;background:#070d20;border-top:3px solid var(--gold);z-index:5;box-shadow:0 -6px 24px #000a}
-.ticker .lbl{background:var(--red);padding:9px 18px;font-weight:900;white-space:nowrap}
-.ticker .win{flex:1;overflow:hidden;position:relative;display:flex;align-items:center}
-.ticker .run{white-space:nowrap;display:inline-block;padding-inline-start:100%;animation:run 38s linear infinite;font-weight:600;font-size:15px}
+.seats{min-width:56px;text-align:center;font-size:32px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.seats small{display:block;font-size:10px;color:var(--mut);font-weight:600}
+.delta{font-size:12px;font-weight:800}
+.up{color:#3ecf8e}.dn{color:#ff6b7a}
+.row.out{opacity:.5}.row.out .seats{color:var(--mut);font-size:20px}
+/* exit polls */
+.epgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.ep{background:#0a1432;border:1px solid var(--line);border-radius:14px;padding:12px}
+.ep h3{font-size:17px;font-weight:900;display:flex;justify-content:space-between;align-items:baseline}
+.ep h3 small{color:var(--mut);font-size:12px;font-weight:500}
+.ep .line{display:grid;grid-template-columns:1fr 34px;gap:8px;align-items:center;font-size:13.5px;margin-top:5px}
+.ep .line div{display:flex;align-items:center;gap:6px}
+.ep .line i{height:8px;border-radius:4px;display:inline-block}
+.ep .line b{text-align:center;font-variant-numeric:tabular-nums}
+.ep .camps{display:flex;gap:6px;margin-top:10px}
+.ep .camps span{flex:1;text-align:center;border-radius:8px;padding:4px;font-weight:900;font-size:14px;color:#0a0f1e}
+.wait{color:var(--mut);text-align:center;padding:30px 10px;font-size:15px}
+/* tables */
+.tscroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:12px}
+td:first-child,th:first-child{text-align:start;position:sticky;inset-inline-start:0;background:var(--p1)}
+td.avg{color:var(--gold);font-weight:900}
+tr.sum td{font-weight:900;border-top:2px solid var(--line)}
+/* localities */
+.locgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.loc{background:#0a1432;border:1px solid var(--line);border-radius:14px;padding:12px}
+.loc h3{font-size:17px;font-weight:900;margin-bottom:2px}
+.loc small{color:var(--mut);font-size:12px}
+.loc .line{display:grid;grid-template-columns:96px 1fr 44px;gap:8px;align-items:center;font-size:13px;margin-top:6px}
+.loc .line .t{height:8px;background:#050b1c;border-radius:4px;overflow:hidden}
+.loc .line .t i{display:block;height:100%}
+/* flash */
+.flash{position:fixed;inset-inline:0;top:22%;z-index:50;display:flex;justify-content:center;pointer-events:none;opacity:0;transform:scale(.9);transition:all .35s}
+.flash.on{opacity:1;transform:scale(1)}
+.flash div{background:linear-gradient(90deg,#b5121b,#ff3b4e);border:3px solid #fff;border-radius:16px;padding:16px 28px;max-width:92vw;box-shadow:0 20px 80px #000c,0 0 60px #ff3b4e88;text-align:center}
+.flash small{display:block;font-weight:900;letter-spacing:3px;font-size:14px;color:#ffe1e4}
+.flash b{display:block;font-size:clamp(20px,4.6vw,40px);font-weight:900}
+.ticker{position:fixed;bottom:0;inset-inline:0;display:flex;background:#070d20;border-top:3px solid var(--gold);z-index:15;box-shadow:0 -6px 24px #000a}
+.ticker .lbl{background:var(--red);padding:9px 16px;font-weight:900;white-space:nowrap}
+.ticker .win{flex:1;overflow:hidden;display:flex;align-items:center}
+.ticker .run{white-space:nowrap;display:inline-block;padding-inline-start:100%;animation:run 45s linear infinite;font-weight:600;font-size:15px}
 @keyframes run{to{transform:translateX(100%)}}
-.ctrl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}
-button{font:inherit;font-weight:700;background:#14224a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px 16px;cursor:pointer}
-button.on{background:var(--gold);color:#1a1200;border-color:var(--gold)}
-footer{color:var(--mut);font-size:12px;text-align:center;padding:14px 8px 70px}
+footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
 </style>
 </head>
 <body>
 <div class="top">
   <div class="brand">בחירות 2026</div>
-  <div class="ttl"><b>הבחירות לכנסת ה-26 · תוצאות בשידור חי</b><small>יום שלישי, 27.10.2026</small></div>
+  <div class="ttl"><b>הבחירות לכנסת ה-26 · שידור חי</b><small>יום שלישי, 27.10.2026 · הקלפיות נסגרות ב-22:00</small></div>
   <div id="live" class="live demo"><i></i><span id="liveTx">הדגמה</span></div>
   <div class="clock" id="clock">--:--</div>
 </div>
 
 <div class="wrap">
-  <div id="demoNote" class="demo-note"></div>
+  <div id="demoNote" class="demo-note"><b>מצב הדגמה:</b> המספרים בלשוניות "תוצאות", "מדגמים" ו"לפי יישובים" <b>מדומים ואינם תוצאות אמת</b>. לשונית "סקרים אחרונים" מציגה סקרים אמיתיים שפורסמו.</div>
 
-  <div class="stats">
-    <div class="stat"><b id="sCount">0%</b><small>קולות שנספרו</small><div class="bar"><i id="bCount" style="width:0"></i></div></div>
-    <div class="stat"><b id="sTurn">0%</b><small>אחוז הצבעה</small><div class="bar"><i id="bTurn" style="width:0"></i></div></div>
-    <div class="stat"><b id="sValid">0</b><small>קולות כשרים שנספרו</small></div>
+  <div class="modebar">
+    <div class="tabs" id="tabs">
+      <button data-v="res" class="on">תוצאות</button>
+      <button data-v="ep">מדגמי הערוצים</button>
+      <button data-v="polls">סקרים אחרונים</button>
+      <button data-v="loc">מגזרים ויישובים</button>
+    </div>
+    <div class="seg">
+      <button id="mDemo" class="on">הדגמה</button>
+      <button id="mLive">שידור חי</button>
+      <button id="snd" title="צליל מבזקים">🔇</button>
+    </div>
   </div>
 
-  <div class="grid">
-    <div class="panel">
-      <h2>חלוקת המנדטים</h2>
-      <div class="hemiwrap">
-        <svg id="hemi" viewBox="0 0 600 330" role="img" aria-label="חלוקת המנדטים"></svg>
-        <div class="center"><b id="cNum">0</b><small>מתוך 120 מנדטים</small></div>
-      </div>
-      <div class="road">
-        <h2 style="margin-top:6px">הדרך ל-61</h2>
+  <!-- RESULTS -->
+  <section class="view on" id="v-res">
+    <div class="stats">
+      <div class="stat"><b id="sCount">0%</b><small>קולות שנספרו</small><div class="bar"><i id="bCount"></i></div></div>
+      <div class="stat"><b id="sTurn">0%</b><small>אחוז הצבעה</small><div class="bar"><i id="bTurn"></i></div></div>
+      <div class="stat"><b id="sValid">0</b><small>קולות כשרים שנספרו</small></div>
+      <div class="stat"><b id="sUpd">—</b><small>עדכון אחרון</small></div>
+    </div>
+    <div class="grid">
+      <div class="panel">
+        <div class="wm"><span>הדגמה · לא תוצאות אמת</span></div>
+        <h2>חלוקת המנדטים</h2>
+        <div class="hemiwrap">
+          <svg id="hemi" viewBox="0 0 600 330" role="img" aria-label="חלוקת המנדטים"></svg>
+          <div class="center"><b id="cNum">0</b><small>מתוך 120 מנדטים</small></div>
+        </div>
+        <h2 style="margin-top:8px">הדרך ל-61</h2>
         <div class="roadbar" id="road"><div class="mark"></div></div>
         <div class="marklbl">▲ רוב של 61 מנדטים</div>
         <div class="blocs" id="blocs"></div>
       </div>
+      <div class="panel">
+        <div class="wm"><span>הדגמה</span></div>
+        <h2>תוצאות לפי רשימה <span style="color:var(--mut);font-weight:500;font-size:12px">· שינוי לעומת ממוצע הסקרים</span></h2>
+        <div id="list"></div>
+      </div>
     </div>
-    <div class="panel">
-      <h2>תוצאות לפי רשימה</h2>
-      <div id="list"></div>
-    </div>
-  </div>
+  </section>
 
-  <div class="ctrl">
-    <button id="mDemo">▶ הדגמה (נתונים מדומים)</button>
-    <button id="mLive">שידור חי</button>
-  </div>
+  <!-- EXIT POLLS -->
+  <section class="view" id="v-ep">
+    <div class="panel">
+      <div class="wm"><span>הדגמה · לא מדגם אמת</span></div>
+      <h2>מדגמי הערוצים · 22:00</h2>
+      <div id="epBox"></div>
+      <div class="src" id="epSrc"></div>
+    </div>
+  </section>
+
+  <!-- POLLS -->
+  <section class="view" id="v-polls">
+    <div class="panel">
+      <h2>הסקרים האחרונים לפני הבחירות (במנדטים)</h2>
+      <div class="tscroll"><table id="pollTbl"></table></div>
+      <div class="src">מקור: ריכוז הסקרים בוויקיפדיה (Opinion polling for the 2026 Israeli legislative election), נכון ל-22.10.2026. רשימה שמתחת לאחוז החסימה מסומנת "–". "קואליציה יוצאת" = הליכוד, הציונות הדתית, עוצמה יהודית, ש"ס ויהדות התורה, לפי הגדרת המקור.</div>
+    </div>
+  </section>
+
+  <!-- LOCALITIES -->
+  <section class="view" id="v-loc">
+    <div class="panel">
+      <div class="wm"><span>הדגמה · לא תוצאות אמת</span></div>
+      <h2>פילוח לפי מגזרים</h2>
+      <div class="locgrid" id="secBox"></div>
+      <div class="src">המגזר נקבע לפי היישוב: חרדי = ערים חרדיות מובהקות, ערבי = יישובים ערביים, ערים גדולות = ירושלים, תל אביב, חיפה, ראשון, נתניה ובאר שבע, פריפריה ויתר הארץ = שאר היישובים שנספרו.</div>
+      <h2 style="margin-top:16px">תוצאות לפי יישובים</h2>
+      <div class="locgrid" id="locBox"></div>
+    </div>
+  </section>
 </div>
 
+<div class="flash" id="flash"><div><small>מבזק</small><b id="flashTx"></b></div></div>
 <div class="ticker"><div class="lbl">מבזק</div><div class="win"><div class="run" id="run"></div></div></div>
-<footer>המנדטים מחושבים בדף לפי שיטת בדר-עופר (אחוז חסימה 3.25%, ללא הסכמי עודפים) ועשויים להשתנות מעט עד פרסום הוועדה. מקור הנתונים: ועדת הבחירות המרכזית. אתר זה אינו אתר רשמי.</footer>
+<footer>המנדטים מחושבים בדף לפי שיטת בדר-עופר (אחוז חסימה 3.25%, ללא הסכמי עודפים) ועשויים להשתנות מעט עד הפרסום הרשמי. מקור התוצאות בשידור חי: ועדת הבחירות המרכזית. אתר זה אינו אתר רשמי.</footer>
 
 <script>
 (function(){
 "use strict";
-var SEATS=120,THRESH=0.0325,ELECTION=new Date("2026-10-27T07:00:00+02:00");
-var BLOC={a:{n:"גוש א׳",c:"#4f8cff"},b:{n:"גוש ב׳",c:"#f2c14e"},c:{n:"גוש ג׳",c:"#3ecf8e"},o:{n:"אחרים",c:"#a78bfa"}};
+var SEATS=120,THRESH=0.0325;
 var $=function(i){return document.getElementById(i)};
 var fmt=function(n){return Math.round(n).toLocaleString("he-IL")};
 var Q=new URLSearchParams(location.search);
 
+/* ---------- parties (camp: coal=קואליציה יוצאת, opp=אופוזיציה, arab=מפלגות ערביות) ---------- */
+var PARTIES=[
+ {k:"likud",n:"הליכוד",ld:"נתניהו",c:"#3a7bff",camp:"coal",m:["ליכוד","likud"]},
+ {k:"yashar",n:"ישר!",ld:"איזנקוט",c:"#ffd23f",camp:"opp",m:["ישר","yashar","איזנקוט"]},
+ {k:"together",n:"ביחד",ld:"בנט",c:"#00b8d4",camp:"opp",m:["ביחד","בנט","together"]},
+ {k:"dems",n:"הדמוקרטים",ld:"גולן",c:"#ff5c5c",camp:"opp",m:["דמוקרט","dems"]},
+ {k:"joint",n:"הרשימה המשותפת",ld:"ג׳בארין",c:"#e84393",camp:"arab",m:["משותפת","joint","חד\"ש","חדש"]},
+ {k:"shas",n:"ש\"ס",ld:"דרעי",c:"#8e7dff",camp:"coal",m:["ש\"ס","שס","shas"]},
+ {k:"otzma",n:"עוצמה יהודית",ld:"בן גביר",c:"#ff8a3d",camp:"coal",m:["עוצמה","otzma"]},
+ {k:"utj",n:"יהדות התורה",ld:"גולדקנופף",c:"#a9b8d9",camp:"coal",m:["יהדות התורה","ג\"","utj","דגל","אגודת"]},
+ {k:"yb",n:"ישראל ביתנו",ld:"ליברמן",c:"#2ecc71",camp:"opp",m:["ביתנו","ליברמן","beiteinu"]},
+ {k:"rzp",n:"הציונות הדתית",ld:"סמוטריץ׳",c:"#f39c12",camp:"coal",m:["ציונות הדתית","זהות","rzp"]},
+ {k:"raam",n:"רע\"ם",ld:"עבאס",c:"#1abc9c",camp:"arab",m:["רע\"ם","רעם","raam","ra'am"]},
+ {k:"reserv",n:"המילואימניקים",ld:"הנדל",c:"#b39dfa",camp:"opp",m:["מילואימ","הנדל","reserv"]},
+ {k:"amcha",n:"עמך ישראל",ld:"וינטר",c:"#fd79a8",camp:"opp",m:["עמך","וינטר","amcha"]}
+];
+var BYK={};PARTIES.forEach(function(p){BYK[p.k]=p});
+var CAMP={coal:{n:"קואליציה יוצאת",c:"#3a7bff"},opp:{n:"אופוזיציה",c:"#ffd23f"},arab:{n:"מפלגות ערביות",c:"#1abc9c"},o:{n:"אחרים",c:"#8fa0c4"}};
+function matchParty(name){
+  var s=(name||"").toLowerCase();
+  for(var i=0;i<PARTIES.length;i++)for(var j=0;j<PARTIES[i].m.length;j++)if(s.indexOf(PARTIES[i].m[j].toLowerCase())>=0)return PARTIES[i];
+  return null;
+}
+
+/* ---------- real polls (Wikipedia aggregate, 19-22.10.2026). null = below threshold ---------- */
+var POLLS=[
+ {d:"22.10",who:"קנטר",outlet:"ישראל היום",s:{likud:21,together:14,rzp:6,otzma:8,shas:8,utj:7,yb:7,raam:5,joint:9,dems:8,yashar:23,reserv:4,amcha:null}},
+ {d:"22.10",who:"סטטנט+דירקט פולס",outlet:"ערוץ 14",s:{likud:30,together:11,rzp:7,otzma:8,shas:9,utj:8,yb:5,raam:6,joint:8,dems:8,yashar:20,reserv:null,amcha:null}},
+ {d:"21-22.10",who:"יוסי טטיקה",outlet:"זמן ישראל",s:{likud:21,together:11,rzp:6,otzma:8,shas:8,utj:8,yb:9,raam:5,joint:9,dems:8,yashar:23,reserv:4,amcha:null}},
+ {d:"19-22.10",who:"לזר+פאנל4אול",outlet:"מעריב",s:{likud:19,together:15,rzp:7,otzma:7,shas:8,utj:7,yb:8,raam:5,joint:9,dems:10,yashar:21,reserv:4,amcha:null}},
+ {d:"21.10",who:"מינה צמח ואחרים",outlet:"חדשות 13",s:{likud:19,together:14,rzp:8,otzma:7,shas:7,utj:8,yb:8,raam:6,joint:9,dems:10,yashar:20,reserv:4,amcha:null}},
+ {d:"21.10",who:"מדגם",outlet:"חדשות 12",s:{likud:19,together:15,rzp:6,otzma:7,shas:8,utj:7,yb:8,raam:5,joint:9,dems:9,yashar:23,reserv:null,amcha:4}}
+];
+var AVG={};PARTIES.forEach(function(p){var t=0;POLLS.forEach(function(x){t+=x.s[p.k]||0});AVG[p.k]=t/POLLS.length});
+
+/* ---------- Bader-Ofer (no surplus agreements) ---------- */
 function allocate(P){
   var tot=0;P.forEach(function(p){tot+=p.votes;p.seats=0});
   var q=P.filter(function(p){return tot>0&&p.votes/tot>=THRESH});
-  var qv=q.reduce(function(s,p){return s+p.votes},0);if(!qv)return;
+  var qv=q.reduce(function(s,p){return s+p.votes},0);if(!qv)return tot;
   var quota=qv/SEATS,used=0;
   q.forEach(function(p){p.seats=Math.floor(p.votes/quota);used+=p.seats});
   for(;used<SEATS;used++){var best=null,bv=-1;q.forEach(function(p){var v=p.votes/(p.seats+1);if(v>bv){bv=v;best=p}});best.seats++}
+  return tot;
 }
 
-/* demo: fictional lists */
-var DEMO=[
- {id:1,name:"הרשימה הכחולה",l:"אב",w:21,b:"a",c:"#4f8cff"},
- {id:2,name:"הרשימה הזהובה",l:"מל",w:17.5,b:"b",c:"#f2c14e"},
- {id:3,name:"רשימת הים",l:"פה",w:11.5,b:"a",c:"#76b2ff"},
- {id:4,name:"רשימת הכרמל",l:"שס",w:9.8,b:"b",c:"#ffd778"},
- {id:5,name:"הרשימה הירוקה",l:"טב",w:8.4,b:"c",c:"#3ecf8e"},
- {id:6,name:"רשימת הנגב",l:"ג",w:6.6,b:"b",c:"#e0a52c"},
- {id:7,name:"רשימת השרון",l:"ד",w:5.3,b:"a",c:"#9cc6ff"},
- {id:8,name:"רשימת הגליל",l:"ל",w:4.4,b:"c",c:"#63e3ae"},
- {id:9,name:"רשימת הערבה",l:"כן",w:3.9,b:"o",c:"#b9a3ff"},
- {id:10,name:"רשימת העמק",l:"ז",w:2.9,b:"o",c:"#ff8f9d"}
+/* ---------- demo generators (deterministic noise) ---------- */
+function rnd(seed){var x=Math.sin(seed*999.1)*10000;return x-Math.floor(x)}
+var DEMO_SHARE={};(function(){
+  var base={};PARTIES.forEach(function(p,i){base[p.k]=Math.max(AVG[p.k],2.4)*(0.92+rnd(i+3)*0.16)});
+  var t=0;for(var k in base)t+=base[k];for(k in base)DEMO_SHARE[k]=base[k]/t;
+})();
+var demoPct=0,VT=4420000;
+function demoResults(){
+  var f=demoPct/100;
+  return {live:false,pctCounted:demoPct,turnout:69.2*Math.min(1,.3+f*.7),updated:new Date().toISOString(),
+    parties:PARTIES.map(function(p,i){var wob=1+(rnd(i*7+Math.floor(demoPct/4))-.5)*.16*Math.max(0,1-f);
+      return {name:p.n,votes:Math.round(VT*f*DEMO_SHARE[p.k]*wob)}})};
+}
+var CHANNELS=[{ch:"חדשות 12",who:"מדגם"},{ch:"כאן 11",who:"קנטר"},{ch:"חדשות 13",who:"פאנלס"},{ch:"ערוץ 14",who:"דירקט פולס"}];
+function demoExit(){
+  return {live:false,polls:CHANNELS.map(function(c,ci){
+    var votes=PARTIES.map(function(p,i){return {name:p.n,votes:Math.round(1e6*DEMO_SHARE[p.k]*(0.9+rnd(ci*31+i)*0.2))}});
+    allocate(votes);var s={};votes.forEach(function(v,i){s[PARTIES[i].k]=v.seats});
+    return {channel:c.ch,pollster:c.who,time:"22:00",seats:s}})};
+}
+var LOCS=[
+ {n:"ירושלים",sk:{utj:2.6,shas:1.8,otzma:1.5,rzp:1.4,likud:1.1,dems:.5,yashar:.7}},
+ {n:"תל אביב-יפו",sk:{dems:2.4,yashar:1.5,together:1.4,likud:.7,utj:.15,shas:.4,otzma:.4}},
+ {n:"בני ברק",sk:{utj:6,shas:3,likud:.2,yashar:.05,dems:.02,together:.05}},
+ {n:"חיפה",sk:{yb:2,dems:1.5,joint:1.6,yashar:1.2,utj:.5}},
+ {n:"באר שבע",sk:{likud:1.7,shas:1.7,otzma:1.6,yb:1.4,dems:.5}},
+ {n:"אשדוד",sk:{shas:1.8,utj:1.6,yb:2.2,likud:1.4,dems:.4}},
+ {n:"נצרת",sk:{joint:9,raam:5,likud:.05,yashar:.1,utj:0,shas:0}},
+ {n:"מודיעין",sk:{yashar:2,together:1.8,dems:1.2,rzp:1,utj:.3}},
+ {n:"נתניה",sk:{likud:1.6,yb:1.3,otzma:1.3,together:1.1}},
+ {n:"ראשון לציון",sk:{likud:1.2,yb:1.4,yashar:1.2,together:1.1}},
+ {n:"אום אל-פחם",sk:{raam:7,joint:7,likud:0,yashar:.05}},
+ {n:"אלעד",sk:{utj:5,shas:4,likud:.1,yashar:0,dems:0}},
+ {n:"ביתר עילית",sk:{utj:6.5,shas:2.5,likud:.1,yashar:0,dems:0}},
+ {n:"מודיעין עילית",sk:{utj:7,shas:2,likud:.1,yashar:0,dems:0}},
+ {n:"רהט",sk:{raam:10,joint:4,likud:.05,yashar:.05}},
+ {n:"דימונה",sk:{likud:2,shas:2.2,otzma:1.8,dems:.3,yashar:.6}},
+ {n:"קריית שמונה",sk:{likud:2.1,otzma:1.6,shas:1.5,dems:.4}}
 ];
-var demoPct=0,VT=4350000,ELIG=6900000;
-function demoData(){
-  var f=demoPct/100,tw=DEMO.reduce(function(s,p){return s+p.w},0);
-  return {live:false,pctCounted:demoPct,turnout:68.9*Math.min(1,.35+f*.65),updated:new Date().toISOString(),
-   parties:DEMO.map(function(p,i){var wob=1+Math.sin(i*7.3+demoPct*.4)*Math.max(0,1-f)*.07;
-    return {id:p.id,name:p.name,letters:p.l,bloc:p.b,color:p.c,votes:Math.round(VT*f*p.w/tw*wob)}})};
+var SECTORS={
+ haredi:{n:"המגזר החרדי",c:"#a9b8d9",l:["בני ברק","אלעד","ביתר עילית","מודיעין עילית","עמנואל","רכסים","בית שמש","קריית יערים","תפרח","מעלה עמוס"]},
+ arab:{n:"המגזר הערבי",c:"#1abc9c",l:["נצרת","אום אל-פחם","רהט","טייבה","טירה","סח'נין","שפרעם","באקה אל-גרביה","טמרה","כפר קאסם","קלנסווה"]},
+ big:{n:"הערים הגדולות",c:"#3a7bff",l:["ירושלים","תל אביב-יפו","תל אביב - יפו","חיפה","ראשון לציון","נתניה","באר שבע"]},
+ rest:{n:"פריפריה ויתר הארץ",c:"#ffd23f",l:[]}
+};
+function sectorOf(name){for(var k in SECTORS)if(SECTORS[k].l.indexOf((name||"").trim())>=0)return k;return "rest"}
+function demoLocs(f){
+  return LOCS.map(function(L,li){var v={},t=0;
+    PARTIES.forEach(function(p,i){var w=DEMO_SHARE[p.k]*(L.sk[p.k]!==undefined?L.sk[p.k]:(p.camp==="arab"?.25:1))*(0.85+rnd(li*17+i)*.3);v[p.n]=w;t+=w});
+    var size=40000+rnd(li)*160000;for(var k in v)v[k]=Math.round(v[k]/t*size*f);
+    return {name:L.n,pctCounted:Math.min(100,f*100*(0.8+rnd(li+5)*.4)),votes:v}});
 }
 
+/* ---------- render: results ---------- */
 function hemicycle(P){
   var rows=9,cx=300,cy=312,r0=120,r1=285,pts=[],radii=[],i;
   for(i=0;i<rows;i++)radii.push(r0+(r1-r0)*i/(rows-1));
   var sum=radii.reduce(function(a,b){return a+b},0),left=SEATS;
   radii.forEach(function(R,ix){var n=ix===rows-1?left:Math.round(SEATS*R/sum);left-=n;for(var k=0;k<n;k++)pts.push({a:Math.PI*(1-(n===1?.5:k/(n-1))),R:R})});
   pts.sort(function(x,y){return y.a-x.a||x.R-y.R});
-  var seq=[];P.slice().sort(function(a,b){return a.order-b.order}).forEach(function(p){for(var k=0;k<p.seats;k++)seq.push(p.color)});
+  var order={coal:0,opp:1,arab:2,o:3};
+  var seq=[];P.slice().sort(function(a,b){return order[a.camp]-order[b.camp]||b.votes-a.votes}).forEach(function(p){for(var k=0;k<p.seats;k++)seq.push(p.color)});
   var h='<defs><filter id="g"><feGaussianBlur stdDeviation="2.2"/></filter></defs>';
-  pts.forEach(function(p,ix){
-    var x=(cx+p.R*Math.cos(p.a)).toFixed(1),y=(cy-p.R*Math.sin(p.a)).toFixed(1),c=seq[ix];
+  pts.forEach(function(p,ix){var x=(cx+p.R*Math.cos(p.a)).toFixed(1),y=(cy-p.R*Math.sin(p.a)).toFixed(1),c=seq[ix];
     if(c)h+='<circle cx="'+x+'" cy="'+y+'" r="9" fill="'+c+'" opacity=".45" filter="url(#g)"/>';
-    h+='<circle cx="'+x+'" cy="'+y+'" r="7.4" fill="'+(c||"#162347")+'" stroke="'+(c?"#ffffff55":"#22345f")+'" stroke-width="1"/>';
-  });
+    h+='<circle cx="'+x+'" cy="'+y+'" r="7.4" fill="'+(c||"#162347")+'" stroke="'+(c?"#ffffff55":"#22345f")+'" stroke-width="1"/>'});
   $("hemi").innerHTML=h;
 }
-/* smooth number tween */
 var shown={};
-function tween(el,key,to,dec){
-  var from=shown[key]||0;shown[key]=to;var t0=performance.now();
-  (function s(t){var k=Math.min(1,(t-t0)/600),v=from+(to-from)*k;el.textContent=dec?v.toFixed(dec):Math.round(v);if(k<1)requestAnimationFrame(s)})(t0);
+function tween(el,key,to){var from=shown[key]||0;shown[key]=to;var t0=performance.now();
+  (function s(t){var k=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*k);if(k<1)requestAnimationFrame(s)})(t0)}
+function enrich(list){
+  return list.map(function(x){var p=matchParty(x.name)||{};
+    return {name:x.name,votes:x.votes||0,k:p.k,color:x.color||p.c||"#8fa0c4",camp:x.camp||p.camp||"o",ld:p.ld||x.letters||""}});
 }
-function render(d){
-  var P=d.parties.map(function(p,i){var o={};for(var k in p)o[k]=p[k];return o});
-  allocate(P);
-  var tot=P.reduce(function(s,p){return s+p.votes},0);
+var prev=null;
+function renderResults(d){
+  var P=enrich(d.parties),tot=allocate(P);
   $("sCount").textContent=d.pctCounted.toFixed(1)+"%";$("bCount").style.width=d.pctCounted+"%";
-  $("sTurn").textContent=d.turnout.toFixed(1)+"%";$("bTurn").style.width=d.turnout+"%";
+  $("sTurn").textContent=(d.turnout||0).toFixed(1)+"%";$("bTurn").style.width=(d.turnout||0)+"%";
   $("sValid").textContent=fmt(tot);
-  P.slice().sort(function(a,b){return (a.bloc>b.bloc?1:a.bloc<b.bloc?-1:0)||b.votes-a.votes}).forEach(function(p,i){p.order=i});
+  $("sUpd").textContent=new Date(d.updated).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});
   hemicycle(P);
-  var assigned=P.reduce(function(s,p){return s+p.seats},0);
-  tween($("cNum"),"c",assigned);
-  var bs={a:0,b:0,c:0,o:0};P.forEach(function(p){bs[p.bloc||"o"]+=p.seats});
+  tween($("cNum"),"c",P.reduce(function(s,p){return s+p.seats},0));
+  var bs={coal:0,opp:0,arab:0,o:0};P.forEach(function(p){bs[p.camp]+=p.seats});
   var road="",bh="";
-  ["a","b","c","o"].forEach(function(k){
-    if(bs[k])road+='<span style="width:'+(bs[k]/SEATS*100)+'%;background:'+BLOC[k].c+'">'+(bs[k]>5?bs[k]:"")+'</span>';
-    if(bs[k])bh+='<div class="bloc" style="background:'+BLOC[k].c+'14;border-color:'+BLOC[k].c+'66"><small>'+BLOC[k].n+'</small><b style="color:'+BLOC[k].c+'">'+bs[k]+'</b>'+(bs[k]>=61?'<em style="color:'+BLOC[k].c+'">רוב ✓</em>':'')+'</div>'});
+  ["coal","opp","arab","o"].forEach(function(k){if(!bs[k])return;
+    road+='<span style="width:'+(bs[k]/SEATS*100)+'%;background:'+CAMP[k].c+'">'+(bs[k]>5?bs[k]:"")+'</span>';
+    bh+='<div class="bloc" style="background:'+CAMP[k].c+'14;border-color:'+CAMP[k].c+'66"><small>'+CAMP[k].n+'</small><b style="color:'+CAMP[k].c+'">'+bs[k]+'</b>'+(bs[k]>=61?'<em style="color:'+CAMP[k].c+'">רוב ✓</em>':'')+'</div>'});
   $("road").innerHTML=road+'<div class="mark"></div>';$("blocs").innerHTML=bh;
-  var S=P.slice().sort(function(a,b){return b.votes-a.votes});
-  var maxv=S[0]?S[0].votes||1:1;
-  $("list").innerHTML=S.map(function(p){
-    var pc=tot?p.votes/tot*100:0;
-    return '<div class="row'+(p.seats?'':' out')+'"><div class="cb" style="background:'+p.color+'"></div><div><div class="nm">'+p.name+'<small>'+(p.letters||"")+'</small></div>'+
-     '<div class="sub"><span>'+pc.toFixed(1)+'%</span><span>'+fmt(p.votes)+' קולות</span></div><div class="tr"><i style="width:'+(p.votes/maxv*100)+'%;background:'+p.color+'"></i></div></div>'+
-     '<div class="seats">'+p.seats+'<small>מנדטים</small></div></div>'}).join("");
-  /* ticker */
+  var S=P.slice().sort(function(a,b){return b.votes-a.votes}),maxv=(S[0]&&S[0].votes)||1;
+  $("list").innerHTML=S.map(function(p){var pc=tot?p.votes/tot*100:0,dl="";
+    if(p.k&&tot){var dv=Math.round(p.seats-AVG[p.k]);dl=dv>0?'<span class="delta up">▲'+dv+'</span>':dv<0?'<span class="delta dn">▼'+(-dv)+'</span>':'<span class="delta" style="color:var(--mut)">=</span>'}
+    return '<div class="row'+(p.seats?'':' out')+'"><div class="cb" style="background:'+p.color+'"></div><div><div class="nm">'+p.name+'<small>'+p.ld+'</small></div>'+
+      '<div class="sub"><span>'+pc.toFixed(1)+'%</span><span>'+fmt(p.votes)+' קולות</span>'+dl+'</div><div class="tr"><i style="width:'+(p.votes/maxv*100)+'%;background:'+p.color+'"></i></div></div>'+
+      '<div class="seats">'+p.seats+'<small>מנדטים</small></div></div>'}).join("");
+  ticker(S,bs,d,tot);
+  flashes(S,bs,d,tot);
+}
+function ticker(S,bs,d,tot){
   var m=[];
-  if(S[0]&&tot){m.push(S[0].name+" מובילה עם "+S[0].seats+" מנדטים");if(S[1])m.push(S[1].name+" במקום השני עם "+S[1].seats+" מנדטים")}
-  m.push(d.pctCounted.toFixed(1)+"% מהקולות נספרו");m.push("אחוז ההצבעה עומד על "+d.turnout.toFixed(1)+"%");
-  var lead=["a","b","c"].sort(function(x,y){return bs[y]-bs[x]})[0];
-  if(bs[lead])m.push(BLOC[lead].n+" מובילים עם "+bs[lead]+" מנדטים"+(bs[lead]>=61?" · רוב של 61":" · חסרים "+(61-bs[lead])+" ל-61"));
-  S.forEach(function(p){if(p.seats===0&&tot&&p.votes/tot>.02)m.push(p.name+" מתחת לאחוז החסימה");});
+  if(S[0]&&tot){m.push(S[0].name+" מובילה עם "+S[0].seats+" מנדטים");if(S[1])m.push(S[1].name+" במקום השני עם "+S[1].seats)}
+  m.push(d.pctCounted.toFixed(1)+"% מהקולות נספרו");m.push("אחוז ההצבעה: "+(d.turnout||0).toFixed(1)+"%");
+  m.push("קואליציה יוצאת: "+bs.coal+" · אופוזיציה: "+bs.opp+" · מפלגות ערביות: "+bs.arab);
+  S.forEach(function(p){if(!p.seats&&tot&&p.votes/tot>.015)m.push(p.name+" מתחת לאחוז החסימה ("+(p.votes/tot*100).toFixed(2)+"%)")});
   var t=m.join("   ◆   ");if($("run").getAttribute("data-t")!==t){$("run").textContent=t;$("run").setAttribute("data-t",t)}
 }
 
-/* modes */
-var mode="demo",timer=null,SRC=Q.get("src")||"results.json",FORCE_DEMO=Q.get("demo")==="1";
+/* ---------- flash alerts ---------- */
+var fq=[],fbusy=false,sound=false,said={};
+function flash(msg){fq.push(msg);if(!fbusy)nextFlash()}
+function nextFlash(){var m=fq.shift();if(!m){fbusy=false;return}fbusy=true;$("flashTx").textContent=m;$("flash").className="flash on";chime();
+  setTimeout(function(){$("flash").className="flash";setTimeout(nextFlash,450)},3200)}
+var ac=null;
+function chime(){if(!sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  [880,660,990].forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.type="sine";
+   g.gain.setValueAtTime(.0001,ac.currentTime+i*.16);g.gain.exponentialRampToValueAtTime(.25,ac.currentTime+i*.16+.02);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+i*.16+.3);
+   o.connect(g);g.connect(ac.destination);o.start(ac.currentTime+i*.16);o.stop(ac.currentTime+i*.16+.32)})}catch(e){}}
+function once(key,msg){if(said[key])return;said[key]=1;flash(msg)}
+function flashes(S,bs,d,tot){
+  if(!tot)return;
+  [10,25,50,75,90,100].forEach(function(t){if(d.pctCounted>=t)once("p"+t,t===100?"הספירה הושלמה":t+"% מהקולות נספרו")});
+  if(S[0]&&d.pctCounted>=5){var lk="lead:"+S[0].name;if(prev&&prev!==S[0].name&&d.pctCounted>=20)once(lk+Math.floor(d.pctCounted/10),"מהפך בצמרת: "+S[0].name+" עוקפת את "+prev);prev=S[0].name}
+  if(d.pctCounted>=30)["coal","opp"].forEach(function(k){if(bs[k]>=61)once("maj"+k,CAMP[k].n+" חוצה את רף 61 המנדטים")});
+  if(d.pctCounted>=40)S.forEach(function(p){if(!p.seats&&p.votes/tot>.02)once("out"+p.name,p.name+" מתחת לאחוז החסימה")});
+}
+
+/* ---------- render: exit polls ---------- */
+function renderExit(E){
+  if(!E||!E.polls||!E.polls.length){$("epBox").innerHTML='<div class="wait">המדגמים יתפרסמו ב-22:00 עם סגירת הקלפיות</div>';$("epSrc").textContent="";return}
+  $("epBox").innerHTML='<div class="epgrid">'+E.polls.map(function(x){
+    var keys=PARTIES.filter(function(p){return x.seats[p.k]}).sort(function(a,b){return x.seats[b.k]-x.seats[a.k]});
+    var cs={coal:0,opp:0,arab:0};keys.forEach(function(p){cs[p.camp]+=x.seats[p.k]});
+    return '<div class="ep"><h3>'+x.channel+'<small>'+(x.pollster||"")+' · '+(x.time||"")+'</small></h3>'+
+     keys.map(function(p){return '<div class="line"><div><i style="width:'+(x.seats[p.k]*4)+'px;background:'+p.c+'"></i>'+p.n+'</div><b>'+x.seats[p.k]+'</b></div>'}).join("")+
+     '<div class="camps">'+["coal","opp","arab"].map(function(k){return '<span style="background:'+CAMP[k].c+'" title="'+CAMP[k].n+'">'+cs[k]+'</span>'}).join("")+'</div></div>'}).join("")+'</div>';
+  $("epSrc").textContent=E.live?("מקור: פרסומי הערוצים"+(E.updated?" · עודכן "+new Date(E.updated).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"}):"")):"צבעי התחתית: קואליציה יוצאת · אופוזיציה · מפלגות ערביות";
+}
+
+/* ---------- render: polls (real) ---------- */
+function renderPolls(){
+  var h='<tr><th>רשימה</th>'+POLLS.map(function(p){return '<th>'+p.outlet+'<br>'+p.who+'<br>'+p.d+'</th>'}).join("")+'<th>ממוצע</th></tr>';
+  PARTIES.slice().sort(function(a,b){return AVG[b.k]-AVG[a.k]}).forEach(function(p){
+    h+='<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+p.c+';margin-inline-end:6px"></span>'+p.n+' <span style="color:var(--mut);font-size:12px">'+p.ld+'</span></td>'+
+     POLLS.map(function(x){return '<td>'+(x.s[p.k]==null?"–":x.s[p.k])+'</td>'}).join("")+'<td class="avg">'+AVG[p.k].toFixed(1)+'</td></tr>'});
+  ["coal","opp","arab"].forEach(function(c){
+    var tot=function(x){return PARTIES.reduce(function(s,p){return s+(p.camp===c?(x.s[p.k]||0):0)},0)};
+    var av=POLLS.reduce(function(s,x){return s+tot(x)},0)/POLLS.length;
+    h+='<tr class="sum"><td style="color:'+CAMP[c].c+'">'+CAMP[c].n+'</td>'+POLLS.map(function(x){return '<td>'+tot(x)+'</td>'}).join("")+'<td class="avg">'+av.toFixed(1)+'</td></tr>'});
+  $("pollTbl").innerHTML=h;
+}
+
+/* ---------- render: localities ---------- */
+function lineBar(n,c,v,t){return '<div class="line"><span>'+n+'</span><div class="t"><i style="width:'+(v/t*100)+'%;background:'+c+'"></i></div><b>'+(v/t*100).toFixed(1)+'%</b></div>'}
+function renderSectors(L){
+  var agg={};
+  L.forEach(function(x){var s=sectorOf(x.name);agg[s]=agg[s]||{v:{},camp:{coal:0,opp:0,arab:0,o:0},t:0};
+    for(var n in x.votes){var p=matchParty(n)||{};var key=p.n||n;agg[s].v[key]=(agg[s].v[key]||0)+x.votes[n];agg[s].camp[p.camp||"o"]+=x.votes[n];agg[s].t+=x.votes[n]}});
+  $("secBox").innerHTML=["haredi","arab","big","rest"].filter(function(k){return agg[k]&&agg[k].t}).map(function(k){
+    var a=agg[k],arr=Object.keys(a.v).map(function(n){var p=matchParty(n)||{};return {n:n,c:p.c||"#8fa0c4",v:a.v[n]}}).sort(function(x,y){return y.v-x.v});
+    var camps='<div class="camps" style="display:flex;gap:4px;margin-top:8px;height:22px;border-radius:6px;overflow:hidden">'+["coal","opp","arab"].map(function(c){var w=a.camp[c]/a.t*100;return w>0?'<span title="'+CAMP[c].n+'" style="width:'+w+'%;background:'+CAMP[c].c+';color:#0a0f1e;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center">'+(w>9?w.toFixed(0)+'%':'')+'</span>':''}).join("")+'</div>';
+    return '<div class="loc" style="border-color:'+SECTORS[k].c+'88;background:linear-gradient(180deg,'+SECTORS[k].c+'1c,#0a1432)"><h3 style="color:'+SECTORS[k].c+'">'+SECTORS[k].n+'</h3><small>'+fmt(a.t)+' קולות שנספרו</small>'+
+      arr.slice(0,5).map(function(x){return lineBar(x.n,x.c,x.v,a.t)}).join("")+camps+'</div>'}).join("")||'<div class="wait">אין עדיין נתונים לפי מגזרים</div>';
+}
+function renderLocs(L){
+  if(!L||!L.length){$("locBox").innerHTML='<div class="wait">התוצאות לפי יישובים יוצגו כשתתחיל הספירה</div>';$("secBox").innerHTML='<div class="wait">הפילוח לפי מגזרים יוצג כשתתחיל הספירה</div>';return}
+  renderSectors(L);
+  $("locBox").innerHTML=L.map(function(x){
+    var arr=Object.keys(x.votes).map(function(n){var p=matchParty(n)||{};return {n:p.n||n,c:p.c||"#8fa0c4",v:x.votes[n]}}).sort(function(a,b){return b.v-a.v});
+    var t=arr.reduce(function(s,a){return s+a.v},0)||1;
+    return '<div class="loc"><h3>'+x.name+'</h3><small>'+(x.pctCounted!=null?x.pctCounted.toFixed(0)+'% נספרו · ':'')+fmt(t)+' קולות</small>'+
+     arr.slice(0,5).map(function(a){return '<div class="line"><span>'+a.n+'</span><div class="t"><i style="width:'+(a.v/t*100)+'%;background:'+a.c+'"></i></div><b>'+(a.v/t*100).toFixed(1)+'%</b></div>'}).join("")+'</div>'}).join("");
+}
+
+/* ---------- modes ---------- */
+var mode="demo",timers=[],SRC=Q.get("src")||"results.json",EPSRC="exitpolls.json";
+function clearT(){timers.forEach(clearInterval);timers=[]}
 function setUI(live){
+  document.body.classList.toggle("islive",live);
   $("live").className="live"+(live?"":" demo");$("liveTx").textContent=live?"שידור חי":"הדגמה";
   $("mDemo").className=live?"":"on";$("mLive").className=live?"on":"";
   $("demoNote").style.display=live?"none":"block";
-  $("demoNote").innerHTML="<b>עמוד הדגמה:</b> כל הנתונים והרשימות <b>מדומים</b> ונועדו להראות איך ייראה השידור. בליל הבחירות הדף יציג את התוצאות האמיתיות.";
 }
-function stop(){if(timer){clearInterval(timer);timer=null}}
 function runDemo(){
-  stop();mode="demo";setUI(false);demoPct=0;shown={};render(demoData());
-  timer=setInterval(function(){demoPct+=.8;if(demoPct>=100){demoPct=100;render(demoData());stop();setTimeout(function(){if(mode==="demo")runDemo()},9000);return}render(demoData())},500);
+  clearT();mode="demo";setUI(false);demoPct=0;shown={};said={};prev=null;
+  renderExit(demoExit());renderLocs(demoLocs(.02));renderResults(demoResults());
+  timers.push(setInterval(function(){
+    demoPct=Math.min(100,demoPct+.7);renderResults(demoResults());renderLocs(demoLocs(demoPct/100));
+    if(demoPct>=100){clearT();setTimeout(function(){if(mode==="demo")runDemo()},12000)}
+  },600));
 }
-function fetchLive(auto){
-  return fetch(SRC+(SRC.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-    if(!d||!d.live||!d.parties||!d.parties.length)throw 0;
-    stop();mode="live";setUI(true);render(d);
-    timer=setInterval(function(){fetch(SRC+"?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(x){if(x&&x.live)render(x)}).catch(function(){})},30000);return true;
-  }).catch(function(){if(!auto)alert("הנתונים החיים עדיין לא פורסמו. הדף יעבור אליהם אוטומטית כשיהיו זמינים.");return false});
+function get(u){return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+function pullLive(){
+  get(SRC).then(function(d){if(d&&d.live){renderResults(d);renderLocs(d.localities)}}).catch(function(){});
+  get(EPSRC).then(function(e){if(e&&e.live)renderExit(e)}).catch(function(){});
 }
-$("mDemo").onclick=runDemo;$("mLive").onclick=function(){fetchLive(false)};
+function goLive(auto){
+  return Promise.all([get(SRC).catch(function(){return null}),get(EPSRC).catch(function(){return null})]).then(function(r){
+    var d=r[0],e=r[1],hasR=d&&d.live&&d.parties&&d.parties.length,hasE=e&&e.live&&e.polls&&e.polls.length;
+    if(!hasR&&!hasE){if(!auto)alert("הנתונים החיים עדיין לא פורסמו. המדגמים ב-22:00, התוצאות מיד אחר כך. הדף יעבור אליהם אוטומטית.");return false}
+    clearT();mode="live";setUI(true);said={};prev=null;shown={};
+    if(hasE)renderExit(e);else renderExit(null);
+    if(hasR){renderResults(d);renderLocs(d.localities)}
+    else{renderResults({pctCounted:0,turnout:0,updated:new Date().toISOString(),parties:[]});renderLocs(null);
+      if(hasE)document.querySelector('[data-v="ep"]').click()}
+    timers.push(setInterval(pullLive,30000));return true;
+  });
+}
+$("mDemo").onclick=runDemo;$("mLive").onclick=function(){goLive(false)};
+$("snd").onclick=function(){sound=!sound;this.textContent=sound?"🔊":"🔇";if(sound)chime()};
+Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.onclick=function(){
+  Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.className=x===b?"on":""});
+  Array.prototype.forEach.call(document.querySelectorAll(".view"),function(v){v.className="view"+(v.id==="v-"+b.getAttribute("data-v")?" on":"")})}});
 function tick(){$("clock").textContent=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 tick();setInterval(tick,1000);
-if(FORCE_DEMO)runDemo();
-else fetchLive(true).then(function(ok){if(!ok){runDemo();setInterval(function(){if(mode==="demo")fetchLive(true)},60000)}});
+renderPolls();
+if(Q.get("demo")==="1")runDemo();
+else goLive(true).then(function(ok){if(!ok){runDemo();setInterval(function(){if(mode==="demo")goLive(true)},60000)}});
+if(Q.get("tab"))(document.querySelector('[data-v="'+Q.get("tab")+'"]')||{click:function(){}}).click();
 })();
 </script>
 </body>
