@@ -24,6 +24,12 @@ body{color:var(--tx);font-family:"Heebo","Segoe UI",Arial,sans-serif;line-height
 @media(max-width:600px){.clock,.ttl small{display:none}.brand{padding:8px 10px;padding-inline-end:22px}.live{padding:0 10px}}
 .wrap{max-width:1240px;margin:0 auto;padding:14px 16px}
 .demo-note{background:linear-gradient(90deg,#3a2a05,#2a1f05);border:1px solid #7a5a12;color:#ffd98a;border-radius:10px;padding:9px 14px;margin-bottom:12px;font-size:14px;text-align:center}
+.radio{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:linear-gradient(90deg,#1a0f2e,#0f1a3a);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:12px}
+.rlbl{font-weight:800;color:var(--gold);margin-inline-end:4px}
+.rbtn{font-weight:700;background:#14224a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px 14px;text-decoration:none}
+.rbtn small{color:var(--mut);font-weight:500}
+.rstate{color:var(--mut);font-size:13px}
+.rstate.on{color:#ff6b7a;font-weight:800}
 .modebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .tabs button{white-space:nowrap}
@@ -125,6 +131,14 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
 
 <div class="wrap">
   <div id="demoNote" class="demo-note"><b>מצב הדגמה:</b> המספרים בלשוניות "תוצאות", "מדגמים" ו"לפי יישובים" <b>מדומים ואינם תוצאות אמת</b>. לשונית "סקרים אחרונים" מציגה סקרים אמיתיים שפורסמו.</div>
+
+  <div class="radio" id="radio">
+    <span class="rlbl">🎙️ האזנה לשידור חי</span>
+    <button id="rKolChai">▶ קול חי</button>
+    <a href="http://kb.cdnwz.net/kol_barama" target="_blank" rel="noopener" class="rbtn">↗ קול ברמה <small>(נפתח בחלון)</small></a>
+    <span id="rState" class="rstate"></span>
+    <audio id="aud" preload="none"></audio>
+  </div>
 
   <div class="modebar">
     <div class="tabs" id="tabs">
@@ -468,6 +482,15 @@ function goLive(auto){
   });
 }
 $("mDemo").onclick=runDemo;$("mLive").onclick=function(){goLive(false)};
+(function(){var a=$("aud"),b=$("rKolChai"),st=$("rState"),URL_KC="https://media2.93fm.co.il/live-new";
+  b.onclick=function(){
+    if(!a.paused){a.pause();a.removeAttribute("src");a.load();b.textContent="▶ קול חי";b.className="";st.textContent="";st.className="rstate";return}
+    a.src=URL_KC;st.textContent="מתחבר...";st.className="rstate";
+    a.play().then(function(){b.textContent="⏸ קול חי";b.className="on";st.textContent="● משדר עכשיו";st.className="rstate on"})
+     .catch(function(){st.textContent="השידור לא זמין כרגע";b.textContent="▶ קול חי";b.className=""});
+  };
+  a.onerror=function(){if(a.getAttribute("src")){st.textContent="השידור לא זמין כרגע";st.className="rstate";b.textContent="▶ קול חי";b.className=""}};
+})();
 $("snd").onclick=function(){sound=!sound;this.textContent=sound?"🔊":"🔇";if(sound)chime()};
 Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.onclick=function(){
   Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.className=x===b?"on":""});
