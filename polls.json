@@ -1,0 +1,126 @@
+{
+ "updated": "2026-10-24T19:25:10.773369+00:00",
+ "source": "Wikipedia",
+ "polls": [
+  {
+   "d": "22 Oct",
+   "who": "Kantar",
+   "outlet": "ישראל היום",
+   "s": {
+    "likud": 21,
+    "together": 14,
+    "rzp": 6,
+    "otzma": 8,
+    "shas": 8,
+    "utj": 7,
+    "yb": 7,
+    "raam": 5,
+    "joint": 9,
+    "dems": 8,
+    "yashar": 23,
+    "reserv": 4,
+    "amcha": null
+   }
+  },
+  {
+   "d": "22 Oct",
+   "who": "SF+ND",
+   "outlet": "ערוץ 14",
+   "s": {
+    "likud": 30,
+    "together": 11,
+    "rzp": 7,
+    "otzma": 8,
+    "shas": 9,
+    "utj": 8,
+    "yb": 5,
+    "raam": 6,
+    "joint": 8,
+    "dems": 8,
+    "yashar": 20,
+    "reserv": null,
+    "amcha": null
+   }
+  },
+  {
+   "d": "21–22 Oct",
+   "who": "Yossi Tatika",
+   "outlet": "זמן ישראל",
+   "s": {
+    "likud": 21,
+    "together": 11,
+    "rzp": 6,
+    "otzma": 8,
+    "shas": 8,
+    "utj": 8,
+    "yb": 9,
+    "raam": 5,
+    "joint": 9,
+    "dems": 8,
+    "yashar": 23,
+    "reserv": 4,
+    "amcha": null
+   }
+  },
+  {
+   "d": "19–22 Oct",
+   "who": "LRI+P4A",
+   "outlet": "מעריב",
+   "s": {
+    "likud": 19,
+    "together": 15,
+    "rzp": 7,
+    "otzma": 7,
+    "shas": 8,
+    "utj": 7,
+    "yb": 8,
+    "raam": 5,
+    "joint": 9,
+    "dems": 10,
+    "yashar": 21,
+    "reserv": 4,
+    "amcha": null
+   }
+  },
+  {
+   "d": "21 Oct",
+   "who": "MP+TM+SN+A",
+   "outlet": "חדשות 13",
+   "s": {
+    "likud": 19,
+    "together": 14,
+    "rzp": 8,
+    "otzma": 7,
+    "shas": 7,
+    "utj": 8,
+    "yb": 8,
+    "raam": 6,
+    "joint": 9,
+    "dems": 10,
+    "yashar": 20,
+    "reserv": 4,
+    "amcha": null
+   }
+  },
+  {
+   "d": "21 Oct",
+   "who": "Midgam R&C",
+   "outlet": "חדשות 12",
+   "s": {
+    "likud": 19,
+    "together": 15,
+    "rzp": 6,
+    "otzma": 7,
+    "shas": 8,
+    "utj": 7,
+    "yb": 8,
+    "raam": 5,
+    "joint": 9,
+    "dems": 9,
+    "yashar": 23,
+    "reserv": null,
+    "amcha": 4
+   }
+  }
+ ]
+}

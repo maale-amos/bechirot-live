@@ -118,6 +118,21 @@ tr.sum td{font-weight:900;border-top:2px solid var(--line)}
 .ticker .win{flex:1;overflow:hidden;display:flex;align-items:center}
 .ticker .run{white-space:nowrap;display:inline-block;padding-inline-start:100%;animation:run 45s linear infinite;font-weight:600;font-size:15px}
 @keyframes run{to{transform:translateX(100%)}}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.pcard{background:#0a1432;border:1px solid;border-radius:14px;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.ph>div{flex:1}.ph b{font-size:18px;font-weight:900;display:block}.ph small{color:var(--mut);font-size:12.5px}
+.pdot{width:14px;height:14px;border-radius:50%;flex:none}
+.pavg{text-align:center;flex:none!important}.pavg b{font-size:28px;line-height:1}.pavg small{font-size:10px}
+.pcard p{padding:0 12px;font-size:14px;color:#d5dcef}
+.pmeta{display:flex;justify-content:space-between;padding:8px 12px 10px;font-size:12px;color:var(--mut);font-weight:700}
+.nlist{display:flex;flex-direction:column;gap:8px}
+.nitem{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:#0a1432;border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--tx);text-decoration:none}
+.nitem:hover{border-color:var(--gold)}
+.nitem b{font-weight:700;font-size:15px}
+.nitem small{color:var(--mut);font-size:12px;white-space:nowrap}
+.nsrc{background:var(--red);color:#fff;font-weight:900;font-size:12px;border-radius:6px;padding:2px 8px;white-space:nowrap}
+@media(max-width:600px){.nitem{grid-template-columns:auto 1fr}.nitem small{grid-column:2}}
 footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
 </style>
 </head>
@@ -146,6 +161,8 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
       <button data-v="ep">מדגמי הערוצים</button>
       <button data-v="polls">סקרים אחרונים</button>
       <button data-v="loc">מגזרים ויישובים</button>
+      <button data-v="parties">המפלגות</button>
+      <button data-v="news">חדשות</button>
     </div>
     <div class="seg">
       <button id="mDemo" class="on">הדגמה</button>
@@ -181,6 +198,29 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
         <div id="list"></div>
       </div>
     </div>
+
+    <div class="panel">
+      <h2>מבזקי חדשות הבחירות</h2>
+      <div id="newsMini" class="nlist"></div>
+    </div>
+  </section>
+
+  <!-- PARTIES -->
+  <section class="view" id="v-parties">
+    <div class="panel">
+      <h2>הרשימות המתמודדות</h2>
+      <div class="pgrid" id="partyBox"></div>
+      <div class="src">ממוצע וטווח לפי הסקרים האחרונים (מתעדכן אוטומטית). שיוך לגושים לפי הכנסת היוצאת.</div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="view" id="v-news">
+    <div class="panel">
+      <h2>חדשות הבחירות · מתעדכן אוטומטית</h2>
+      <div id="newsBox" class="nlist"></div>
+      <div class="src">כותרות מאתרי JDN, קול חי וקול ברמה, מסוננות לנושא הבחירות. לחיצה פותחת את הכתבה באתר המקור.</div>
+    </div>
   </section>
 
   <!-- EXIT POLLS -->
@@ -198,7 +238,7 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
     <div class="panel">
       <h2>הסקרים האחרונים לפני הבחירות (במנדטים)</h2>
       <div class="tscroll"><table id="pollTbl"></table></div>
-      <div class="src">מקור: ריכוז הסקרים בוויקיפדיה (Opinion polling for the 2026 Israeli legislative election), נכון ל-22.10.2026. רשימה שמתחת לאחוז החסימה מסומנת "–". "קואליציה יוצאת" = הליכוד, הציונות הדתית, עוצמה יהודית, ש"ס ויהדות התורה, לפי הגדרת המקור.</div>
+      <div class="src"><b id="pollUpd"></b> · מקור: ריכוז הסקרים בוויקיפדיה (Opinion polling for the 2026 Israeli legislative election), נמשך אוטומטית כל 10 דקות. רשימה שמתחת לאחוז החסימה מסומנת "–". "קואליציה יוצאת" = הליכוד, הציונות הדתית, עוצמה יהודית, ש"ס ויהדות התורה, לפי הגדרת המקור.</div>
     </div>
   </section>
 
@@ -243,6 +283,21 @@ var PARTIES=[
  {k:"reserv",n:"המילואימניקים",ld:"הנדל",c:"#b39dfa",camp:"opp",m:["מילואימ","הנדל","reserv"]},
  {k:"amcha",n:"עמך ישראל",ld:"וינטר",c:"#fd79a8",camp:"opp",m:["עמך","וינטר","amcha"]}
 ];
+var DESC={
+ likud:"המפלגה הגדולה בכנסת היוצאת ומפלגת השלטון. מפלגת ימין לאומית ליברלית, בראשות ראש הממשלה בנימין נתניהו.",
+ yashar:"רשימה חדשה בראשות גדי איזנקוט, הרמטכ\"ל לשעבר וחבר כנסת לשעבר מטעם המחנה הממלכתי.",
+ together:"רשימה בראשות נפתלי בנט, ראש הממשלה לשעבר, שחזר לפוליטיקה לקראת הבחירות האלה.",
+ dems:"איחוד של מפלגת העבודה ומרצ, בראשות יאיר גולן, סגן הרמטכ\"ל לשעבר. רשימת שמאל-מרכז.",
+ joint:"רשימה משותפת של מפלגות ערביות, בראשות יוסף ג׳בארין.",
+ shas:"מפלגה חרדית ספרדית בהנהגת מועצת חכמי התורה, בראשות אריה דרעי.",
+ otzma:"מפלגת ימין דתית לאומית בראשות איתמר בן גביר, השר לביטחון לאומי לשעבר.",
+ utj:"איחוד של אגודת ישראל ודגל התורה, הנציגות החרדית האשכנזית. בראש הרשימה יצחק גולדקנופף.",
+ yb:"מפלגת ימין חילונית בראשות אביגדור ליברמן, שר האוצר והביטחון לשעבר.",
+ rzp:"מפלגת הציונות הדתית בראשות בצלאל סמוטריץ׳, שר האוצר, יחד עם זהות.",
+ raam:"הרשימה הערבית המאוחדת, בראשות מנסור עבאס. הייתה חלק מממשלת בנט-לפיד.",
+ reserv:"רשימה חדשה של אנשי מילואים, בראשות יועז הנדל, שר התקשורת לשעבר.",
+ amcha:"רשימה חדשה בראשות האלוף (במיל׳) עופר וינטר."
+};
 var BYK={};PARTIES.forEach(function(p){BYK[p.k]=p});
 var CAMP={coal:{n:"קואליציה יוצאת",c:"#3a7bff"},opp:{n:"אופוזיציה",c:"#ffd23f"},arab:{n:"מפלגות ערביות",c:"#1abc9c"},o:{n:"אחרים",c:"#8fa0c4"}};
 function matchParty(name){
@@ -260,7 +315,18 @@ var POLLS=[
  {d:"21.10",who:"סקר משולב",outlet:"חדשות 13",s:{likud:19,together:14,rzp:8,otzma:7,shas:7,utj:8,yb:8,raam:6,joint:9,dems:10,yashar:20,reserv:4,amcha:null}},
  {d:"21.10",who:"מדגם",outlet:"חדשות 12",s:{likud:19,together:15,rzp:6,otzma:7,shas:8,utj:7,yb:8,raam:5,joint:9,dems:9,yashar:23,reserv:null,amcha:4}}
 ];
-var AVG={};PARTIES.forEach(function(p){var t=0;POLLS.forEach(function(x){t+=x.s[p.k]||0});AVG[p.k]=t/POLLS.length});
+var AVG={};
+function calcAvg(){PARTIES.forEach(function(p){var t=0;POLLS.forEach(function(x){t+=x.s[p.k]||0});AVG[p.k]=t/POLLS.length})}
+calcAvg();
+var POLL_UPD="22.10.2026";
+var FIRM={"kantar":"קנטר","sf+nd":"פילבר+דירקט פולס","yossi tatika":"יוסי טטיקה","lri+p4a":"לזר+פאנל4אול","midgam r&c":"מדגם","midgam":"מדגם","mp+tm+sn+a":"סקר משולב","direct polls":"דירקט פולס","lazar":"לזר","panels politics":"פאנלס פוליטיקס","camil fuchs":"קמיל פוקס","agam":"אגם","shlomo filber":"שלמה פילבר"};
+var MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+function heDate(s){return s.replace(/(\d{1,2})(?:\s*[–-]\s*(\d{1,2}))?\s+([A-Za-z]{3})[a-z]*/,function(_,a,b,m){var n=MON[m.toLowerCase()]||"";return (b?a+"-"+b:a)+"."+n})}
+function loadPolls(){return fetch("polls.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
+  if(!j||!j.polls||j.polls.length<3)return;
+  POLLS=j.polls.map(function(p){return {d:heDate(p.d),who:FIRM[(p.who||"").toLowerCase()]||p.who,outlet:p.outlet,s:p.s}});
+  POLL_UPD=new Date(j.updated).toLocaleString("he-IL",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+  calcAvg();renderPolls();renderParties();}).catch(function(){})}
 
 /* ---------- Bader-Ofer (no surplus agreements) ---------- */
 function allocate(P){
@@ -378,6 +444,7 @@ function ticker(S,bs,d,tot){
   m.push(d.pctCounted.toFixed(1)+"% מהקולות נספרו");m.push("אחוז ההצבעה: "+(d.turnout||0).toFixed(1)+"%");
   m.push("קואליציה יוצאת: "+bs.coal+" · אופוזיציה: "+bs.opp+" · מפלגות ערביות: "+bs.arab);
   S.forEach(function(p){if(!p.seats&&tot&&p.votes/tot>.015)m.push(p.name+" מתחת לאחוז החסימה ("+(p.votes/tot*100).toFixed(2)+"%)")});
+  m=m.concat(NEWS_HEAD);
   var t=m.join("   ◆   ");if($("run").getAttribute("data-t")!==t){$("run").textContent=t;$("run").setAttribute("data-t",t)}
 }
 
@@ -423,7 +490,30 @@ function renderPolls(){
     var av=POLLS.reduce(function(s,x){return s+tot(x)},0)/POLLS.length;
     h+='<tr class="sum"><td style="color:'+CAMP[c].c+'">'+CAMP[c].n+'</td>'+POLLS.map(function(x){return '<td>'+tot(x)+'</td>'}).join("")+'<td class="avg">'+av.toFixed(1)+'</td></tr>'});
   $("pollTbl").innerHTML=h;
+  $("pollUpd").textContent="עודכן אוטומטית: "+POLL_UPD;
 }
+
+/* ---------- parties profiles ---------- */
+function renderParties(){
+  $("partyBox").innerHTML=PARTIES.slice().sort(function(a,b){return AVG[b.k]-AVG[a.k]}).map(function(p){
+    var vals=POLLS.map(function(x){return x.s[p.k]||0}),mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);
+    return '<div class="pcard" style="border-color:'+p.c+'77"><div class="ph" style="background:linear-gradient(90deg,'+p.c+'33,transparent)"><span class="pdot" style="background:'+p.c+'"></span><div><b>'+p.n+'</b><small>בראשות '+p.ld+'</small></div><div class="pavg"><b style="color:'+p.c+'">'+AVG[p.k].toFixed(1)+'</b><small>ממוצע סקרים</small></div></div>'+
+      '<p>'+(DESC[p.k]||"")+'</p><div class="pmeta"><span>טווח בסקרים: '+(mn===mx?mn:mn+"–"+mx)+'</span><span style="color:'+CAMP[p.camp].c+'">'+CAMP[p.camp].n+'</span></div></div>'}).join("");
+}
+
+/* ---------- news ---------- */
+var seenNews=null;
+function ago(d){var m=Math.round((Date.now()-new Date(d))/60000);return m<1?"עכשיו":m<60?"לפני "+m+" דק׳":m<1440?"לפני "+Math.round(m/60)+" שע׳":new Date(d).toLocaleDateString("he-IL")}
+function loadNews(){return fetch("news.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
+  var it=(j&&j.items)||[];
+  var row=function(x){return '<a class="nitem" href="'+x.link+'" target="_blank" rel="noopener"><span class="nsrc">'+x.source+'</span><b>'+x.title.replace(/</g,"&lt;")+'</b><small>'+ago(x.date)+'</small></a>'};
+  $("newsBox").innerHTML=it.length?it.map(row).join(""):'<div class="wait">אין עדיין כותרות</div>';
+  $("newsMini").innerHTML=it.slice(0,4).map(row).join("");
+  NEWS_HEAD=it.slice(0,3).map(function(x){return x.source+": "+x.title});
+  if(seenNews){it.filter(function(x){return !seenNews[x.link]}).slice(0,2).forEach(function(x){flash(x.source+": "+x.title)})}
+  seenNews={};it.forEach(function(x){seenNews[x.link]=1});
+ }).catch(function(){})}
+var NEWS_HEAD=[];
 
 /* ---------- render: localities ---------- */
 function lineBar(n,c,v,t){return '<div class="line"><span>'+n+'</span><div class="t"><i style="width:'+(v/t*100)+'%;background:'+c+'"></i></div><b>'+(v/t*100).toFixed(1)+'%</b></div>'}
@@ -497,7 +587,8 @@ Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(
   Array.prototype.forEach.call(document.querySelectorAll(".view"),function(v){v.className="view"+(v.id==="v-"+b.getAttribute("data-v")?" on":"")})}});
 function tick(){$("clock").textContent=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 tick();setInterval(tick,1000);
-renderPolls();
+renderPolls();renderParties();loadPolls();loadNews();
+setInterval(loadNews,120000);setInterval(loadPolls,600000);
 if(Q.get("demo")==="1")runDemo();
 else goLive(true).then(function(ok){if(!ok){runDemo();setInterval(function(){if(mode==="demo")goLive(true)},60000)}});
 if(Q.get("tab"))(document.querySelector('[data-v="'+Q.get("tab")+'"]')||{click:function(){}}).click();
