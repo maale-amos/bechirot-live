@@ -612,7 +612,8 @@ Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(
 function tick(){$("clock").textContent=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 tick();setInterval(tick,1000);
 renderPolls();renderParties();loadPolls();loadFeed();
-setInterval(loadFeed,15000);setInterval(loadPolls,600000);
+setInterval(function(){if(!document.hidden)loadFeed()},15000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)loadFeed()});setInterval(loadPolls,600000);
 if(Q.get("demo")==="1")runDemo();
 else goLive(true).then(function(ok){if(!ok){runDemo();setInterval(function(){if(mode==="demo")goLive(true)},60000)}});
 if(Q.get("tab"))(document.querySelector('[data-v="'+Q.get("tab")+'"]')||{click:function(){}}).click();
