@@ -1,2 +1,4 @@
 update.log
 __pycache__/
+.github/
+server/state.json

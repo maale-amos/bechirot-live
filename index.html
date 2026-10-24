@@ -152,6 +152,7 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
     <button id="rKolChai">▶ קול חי</button>
     <a href="http://kb.cdnwz.net/kol_barama" target="_blank" rel="noopener" class="rbtn">↗ קול ברמה <small>(נפתח בחלון)</small></a>
     <span id="rState" class="rstate"></span>
+    <span id="feedSt" class="rstate" style="margin-inline-start:auto"></span>
     <audio id="aud" preload="none"></audio>
   </div>
 
@@ -509,20 +510,31 @@ function renderParties(){
 /* ---------- news ---------- */
 var seenNews=null;
 function ago(d){var m=Math.round((Date.now()-new Date(d))/60000);return m<1?"עכשיו":m<60?"לפני "+m+" דק׳":m<1440?"לפני "+Math.round(m/60)+" שע׳":new Date(d).toLocaleDateString("he-IL")}
-function loadNews(){return fetch("news.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
-  var it=(j&&j.items)||[];
+/* live feed: Supabase edge function (refreshed every 15s); falls back to the repo files */
+var FEED="https://cmsusfmwjtpfewbydzpi.supabase.co/functions/v1/bechirot-feed",lastFeed=null;
+function fetchFeed(){
+  return fetch(FEED,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){
+    return Promise.all([get("news.json").catch(function(){return {}}),get("hagizra.json").catch(function(){return {}})])
+      .then(function(r){return {news:r[0].items||[],gizra:r[1].items||[],fallback:true}})});
+}
+function loadFeed(){return fetchFeed().then(function(j){
+  lastFeed=j;renderNews(j.news||[]);renderGizra(j.gizra||[]);
+  $("feedSt").textContent=(j.fallback?"עדכון מגובה · ":"● מחובר לעדכון חי · ")+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  if(mode==="live"){if(j.results){renderResults(j.results);renderLocs(j.results.localities)}if(j.exitpolls)renderExit(j.exitpolls)}
+  else if(Q.get("demo")!=="1"&&(j.results||j.exitpolls))goLive(true);
+ })}
+function renderNews(it){
   var row=function(x){return '<a class="nitem" href="'+x.link+'" target="_blank" rel="noopener"><span class="nsrc">'+x.source+'</span><b>'+x.title.replace(/</g,"&lt;")+'</b><small>'+ago(x.date)+'</small></a>'};
   $("newsBox").innerHTML=it.length?it.map(row).join(""):'<div class="wait">אין עדיין כותרות</div>';
   $("newsMini").innerHTML=it.slice(0,4).map(row).join("");
   NEWS_HEAD=it.slice(0,3).map(function(x){return x.source+": "+x.title});
-  if(seenNews){it.filter(function(x){return !seenNews[x.link]}).slice(0,2).forEach(function(x){flash(x.source+": "+x.title)})}
-  seenNews={};it.forEach(function(x){seenNews[x.link]=1});
- }).catch(function(){})}
+  if(seenNews){it.filter(function(x){return !seenNews[x.link+x.title]}).slice(0,2).forEach(function(x){flash(x.source+": "+x.title)})}
+  seenNews={};it.forEach(function(x){seenNews[x.link+x.title]=1});
+}
 var NEWS_HEAD=[];
-function loadGizra(){return fetch("hagizra.json?t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
-  var it=(j&&j.items)||[];
+function renderGizra(it){
   $("gizraBox").innerHTML=it.length?it.map(function(x){return '<a class="nitem" href="'+x.link+'" target="_blank" rel="noopener"><span class="nsrc" style="background:#7b2ff7">הגיזרה</span><b>'+x.title.replace(/</g,"&lt;")+'</b><small>'+ago(x.date)+'</small></a>'}).join(""):'<div class="wait">אין עדכונים כרגע</div>';
- }).catch(function(){})}
+}
 
 /* ---------- render: localities ---------- */
 function lineBar(n,c,v,t){return '<div class="line"><span>'+n+'</span><div class="t"><i style="width:'+(v/t*100)+'%;background:'+c+'"></i></div><b>'+(v/t*100).toFixed(1)+'%</b></div>'}
@@ -565,11 +577,14 @@ function runDemo(){
 }
 function get(u){return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
 function pullLive(){
+  if(lastFeed&&!lastFeed.fallback)return; /* the 15s feed loop already renders live data */
   get(SRC).then(function(d){if(d&&d.live){renderResults(d);renderLocs(d.localities)}}).catch(function(){});
   get(EPSRC).then(function(e){if(e&&e.live)renderExit(e)}).catch(function(){});
 }
 function goLive(auto){
-  return Promise.all([get(SRC).catch(function(){return null}),get(EPSRC).catch(function(){return null})]).then(function(r){
+  var f=lastFeed||{};
+  return Promise.all([f.results?Promise.resolve(f.results):get(SRC).catch(function(){return null}),
+                      f.exitpolls?Promise.resolve(f.exitpolls):get(EPSRC).catch(function(){return null})]).then(function(r){
     var d=r[0],e=r[1],hasR=d&&d.live&&d.parties&&d.parties.length,hasE=e&&e.live&&e.polls&&e.polls.length;
     if(!hasR&&!hasE){if(!auto)alert("הנתונים החיים עדיין לא פורסמו. המדגמים ב-22:00, התוצאות מיד אחר כך. הדף יעבור אליהם אוטומטית.");return false}
     clearT();mode="live";setUI(true);said={};prev=null;shown={};
@@ -596,8 +611,8 @@ Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(
   Array.prototype.forEach.call(document.querySelectorAll(".view"),function(v){v.className="view"+(v.id==="v-"+b.getAttribute("data-v")?" on":"")})}});
 function tick(){$("clock").textContent=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 tick();setInterval(tick,1000);
-renderPolls();renderParties();loadPolls();loadNews();loadGizra();
-setInterval(loadNews,120000);setInterval(loadGizra,120000);setInterval(loadPolls,600000);
+renderPolls();renderParties();loadPolls();loadFeed();
+setInterval(loadFeed,15000);setInterval(loadPolls,600000);
 if(Q.get("demo")==="1")runDemo();
 else goLive(true).then(function(ok){if(!ok){runDemo();setInterval(function(){if(mode==="demo")goLive(true)},60000)}});
 if(Q.get("tab"))(document.querySelector('[data-v="'+Q.get("tab")+'"]')||{click:function(){}}).click();
