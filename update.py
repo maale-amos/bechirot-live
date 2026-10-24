@@ -47,6 +47,10 @@ def news():
             except Exception:
                 continue
             items.append({"title": title[:180], "link": link, "source": src, "date": d.isoformat()})
+    flashes = gizra()
+    if flashes is not None:
+        ok += 1
+        items += [f for f in flashes if any(k in f["title"] for k in KEYS)]
     if not ok:
         print("news: no feed reachable, keeping old file")
         return
@@ -58,6 +62,39 @@ def news():
         out.append(it)
     write("news.json", {"updated": now(), "items": out[:40]})
     print("news:", len(out), "items from", ok, "feeds")
+
+
+def clean(t):
+    t = html.unescape(re.sub(r"<[^>]+>", " ", t or ""))
+    t = re.sub(r"[*_~`#>]+", "", t)
+    t = re.sub(r"https?://\S+", "", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def gizra():
+    """Hagizra flashes (hagizra.news public JSON). Writes hagizra.json, returns items or None."""
+    try:
+        msgs = json.loads(get("https://hagizra.news/api/v2/messages?limit=40"))["messages"]
+    except Exception as e:
+        print("hagizra failed", e)
+        return None
+    out = []
+    for m in msgs:
+        if m.get("deleted") or m.get("is_ads"):
+            continue
+        text = clean(m.get("text"))
+        if len(text) < 8:
+            continue
+        try:
+            d = datetime.datetime.fromisoformat(m["timestamp"][:26].rstrip("Z") + "+00:00")
+        except Exception:
+            continue
+        out.append({"title": text[:220], "link": "https://hagizra.news/", "source": "הגיזרה",
+                    "date": d.isoformat(), "id": m.get("id")})
+    out.sort(key=lambda x: x["date"], reverse=True)
+    write("hagizra.json", {"updated": now(), "items": out[:25]})
+    print("hagizra:", len(out))
+    return out
 
 
 # Wikipedia column header -> page party key

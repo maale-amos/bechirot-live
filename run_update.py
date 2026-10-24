@@ -29,7 +29,7 @@ def main():
     r = subprocess.run([sys.executable, "-I", "update.py"], cwd=REPO, capture_output=True, text=True,
                        encoding="utf-8", errors="ignore", env=env, timeout=240)
     out = " | ".join(l for l in r.stdout.splitlines() if l.strip())
-    git("add", "news.json", "polls.json")
+    git("add", "news.json", "polls.json", "hagizra.json")
     code, _ = git("diff", "--cached", "--quiet")
     if code == 0:
         log("no change · " + out)
