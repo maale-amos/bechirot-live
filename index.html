@@ -428,7 +428,7 @@ function hemicycle(P){
   $("hemi").innerHTML=h;
 }
 var shown={};
-function tween(el,key,to){var from=shown[key]||0;shown[key]=to;var t0=performance.now();
+function tween(el,key,to){var from=shown[key]||0;shown[key]=to;if(document.hidden){el.textContent=to;return}var t0=performance.now();
   (function s(t){var k=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*k);if(k<1)requestAnimationFrame(s)})(t0)}
 function enrich(list){
   return list.map(function(x){var p=matchParty(x.name)||{};
