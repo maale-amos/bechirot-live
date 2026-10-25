@@ -2,3 +2,4 @@ update.log
 __pycache__/
 .github/
 server/state.json
+server/package.json

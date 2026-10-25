@@ -15,7 +15,10 @@ def pat():
 
 
 def main():
-    code = io.open(os.path.join(HERE, "index.ts"), encoding="utf-8").read().encode("utf-8")
+    code = io.open(os.path.join(HERE, "index.ts"), encoding="utf-8").read()
+    parse = io.open(os.path.join(HERE, "cec_parse.js"), encoding="utf-8").read().replace("export function", "function")
+    assert "/*CEC_PARSE*/" in code
+    code = code.replace("/*CEC_PARSE*/", "// @ts-nocheck-start (inlined from cec_parse.js)\n" + parse).encode("utf-8")
     meta = json.dumps({"entrypoint_path": "index.ts", "name": SLUG, "verify_jwt": False}).encode()
     b = "----" + uuid.uuid4().hex
     body = (("--%s\r\nContent-Disposition: form-data; name=\"metadata\"\r\nContent-Type: application/json\r\n\r\n" % b).encode()

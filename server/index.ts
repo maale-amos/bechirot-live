@@ -7,6 +7,33 @@ const FEEDS: [string, string][] = [["JDN", "https://www.jdn.co.il/feed/"], ["ק�
   ["קול ברמה", "https://www.kolbarama.co.il/feed/"]];
 // Election-night sources (results.json / exitpolls.json kept in the GitHub repo by the night task).
 const REPO = "https://raw.githubusercontent.com/maale-amos/bechirot-live/main/";
+// Official CEC result pages for the 26th Knesset (URL pattern verified on archived 21st-25th Knesset files).
+const CEC_NATIONAL = "https://votes26.bechirot.gov.il/nationalresults";
+const CEC_LOCALITIES = "https://media26.bechirot.gov.il/files/expc.csv";
+const ELIGIBLE = 7336553;
+const SECTOR_TOWNS = ["בני ברק", "אלעד", "ביתר עילית", "מודיעין עילית", "עמנואל", "רכסים", "בית שמש", "קריית יערים",
+  "תפרח", "מעלה עמוס", "נצרת", "אום אל-פחם", "רהט", "טייבה", "טירה", "סח'נין", "שפרעם", "באקה אל-גרביה", "טמרה",
+  "כפר קאסם", "קלנסווה", "ירושלים", "תל אביב - יפו", "חיפה", "ראשון לציון", "נתניה", "באר שבע"];
+
+/*CEC_PARSE*/
+
+async function cec(): Promise<unknown | null> {
+  const nr = await get(CEC_NATIONAL, 8000);
+  if (!nr.ok) return null;
+  const nat = parseNational(await nr.text());
+  if (nat.lists.length < 5 || !nat.valid) return null;
+  let locs: unknown[] = [];
+  try {
+    const lr = await get(CEC_LOCALITIES, 8000);
+    if (lr.ok) {
+      const buf = new Uint8Array(await lr.arrayBuffer());
+      let csv = new TextDecoder("utf-8").decode(buf);
+      if (!/שם ישוב/.test(csv)) csv = new TextDecoder("windows-1255").decode(buf);
+      locs = parseExpc(csv);
+    }
+  } catch (_) { /* national results are enough */ }
+  return buildResults(nat, locs, ELIGIBLE, SECTOR_TOWNS);
+}
 
 type Item = { title: string; link: string; source: string; date: string; id?: number };
 const cache = new Map<string, { t: number; v: unknown }>();
@@ -82,14 +109,17 @@ const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
   if (new URL(req.url).searchParams.get("debug") === "1") {
-    const st = await Promise.all(FEEDS.map(([s, u]) => get(u).then(async (r) => { const t = await r.text();
+    const probe: [string, string][] = [...FEEDS, ["cec26", CEC_NATIONAL], ["cec26csv", CEC_LOCALITIES],
+      ["cec25", "https://votes25.bechirot.gov.il/nationalresults"]];
+    const st = await Promise.all(probe.map(([s, u]) => get(u).then(async (r) => { const t = await r.text();
         return s + " " + r.status + " len=" + t.length + " items=" + (t.match(/<item>/g) || []).length + " ct=" + r.headers.get("content-type"); })
       .catch((e) => s + " ERR " + String(e).slice(0, 80))));
     return new Response(JSON.stringify(st), { headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
   }
-  const [g, n, res, ep] = await Promise.all([
-    cached("gizra", 10, gizra), cached("rss", 45, rss),
+  const [g, n, official, repoRes, ep] = await Promise.all([
+    cached("gizra", 10, gizra), cached("rss", 45, rss), cached("cec", 15, cec),
     cached("results", 15, () => repoJson("results.json")), cached("exit", 30, () => repoJson("exitpolls.json"))]);
+  const res = official || repoRes;
   const giz = (g as Item[]) || [];
   const news = ((n as Item[]) || []).concat(giz.filter((x) => hasKey(x.title)))
     .sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 40);

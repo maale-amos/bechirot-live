@@ -263,7 +263,7 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
 
 <div class="flash" id="flash"><div><small>מבזק</small><b id="flashTx"></b></div></div>
 <div class="ticker"><div class="lbl">מבזק</div><div class="win"><div class="run" id="run"></div></div></div>
-<footer>המנדטים מחושבים בדף לפי שיטת בדר-עופר (אחוז חסימה 3.25%, ללא הסכמי עודפים) ועשויים להשתנות מעט עד הפרסום הרשמי. מקור התוצאות בשידור חי: ועדת הבחירות המרכזית. אתר זה אינו אתר רשמי.</footer>
+<footer>המנדטים מחושבים בדף לפי שיטת בדר-עופר (אחוז חסימה 3.25%, כולל הסכמי העודפים שדווחו) ועשויים להשתנות מעט עד הפרסום הרשמי. מקור התוצאות בשידור חי: ועדת הבחירות המרכזית. אתר זה אינו אתר רשמי.</footer>
 
 <script>
 (function(){
@@ -275,33 +275,40 @@ var Q=new URLSearchParams(location.search);
 
 /* ---------- parties (camp: coal=קואליציה יוצאת, opp=אופוזיציה, arab=מפלגות ערביות) ---------- */
 var PARTIES=[
- {k:"likud",n:"הליכוד",ld:"נתניהו",c:"#3a7bff",camp:"coal",m:["ליכוד","likud"]},
- {k:"yashar",n:"ישר!",ld:"איזנקוט",c:"#ffd23f",camp:"opp",m:["ישר","yashar","איזנקוט"]},
- {k:"together",n:"ביחד",ld:"בנט",c:"#00b8d4",camp:"opp",m:["ביחד","בנט","together"]},
- {k:"dems",n:"הדמוקרטים",ld:"גולן",c:"#ff5c5c",camp:"opp",m:["דמוקרט","dems"]},
- {k:"joint",n:"הרשימה המשותפת",ld:"ג׳בארין",c:"#e84393",camp:"arab",m:["משותפת","joint","חד\"ש","חדש"]},
- {k:"shas",n:"ש\"ס",ld:"דרעי",c:"#8e7dff",camp:"coal",m:["ש\"ס","שס","shas"]},
- {k:"otzma",n:"עוצמה יהודית",ld:"בן גביר",c:"#ff8a3d",camp:"coal",m:["עוצמה","otzma"]},
- {k:"utj",n:"יהדות התורה",ld:"גולדקנופף",c:"#a9b8d9",camp:"coal",m:["יהדות התורה","ג\"","utj","דגל","אגודת"]},
  {k:"yb",n:"ישראל ביתנו",ld:"ליברמן",c:"#2ecc71",camp:"opp",m:["ביתנו","ליברמן","beiteinu"]},
- {k:"rzp",n:"הציונות הדתית",ld:"סמוטריץ׳",c:"#f39c12",camp:"coal",m:["ציונות הדתית","זהות","rzp"]},
+ {k:"amcha",n:"עמך ישראל",ld:"וינטר",c:"#fd79a8",camp:"opp",m:["עמך","וינטר","amcha"]},
+ {k:"yashar",n:"ישר!",ld:"איזנקוט",c:"#ffd23f",camp:"opp",m:["ישר!","ישר !","איזנקוט","yashar"]},
+ {k:"together",n:"ביחד",ld:"בנט ולפיד",c:"#00b8d4",camp:"opp",m:["ביחד","בנט","together"]},
+ {k:"dems",n:"הדמוקרטים",ld:"גולן",c:"#ff5c5c",camp:"opp",m:["דמוקרט","dems"]},
+ {k:"joint",n:"הרשימה המשותפת",ld:"חד״ש, תע״ל ובל״ד",c:"#e84393",camp:"arab",m:["משותפת","joint","חד\"ש","תע\"ל"]},
+ {k:"utj",n:"יהדות התורה",ld:"",c:"#a9b8d9",camp:"coal",m:["יהדות התורה","utj","דגל התורה","אגודת"]},
+ {k:"haredi",n:"הציבור החרדי",ld:"",c:"#7f8fa6",camp:"o",m:["הציבור החרדי"]},
+ {k:"shas",n:"ש\"ס",ld:"דרעי",c:"#8e7dff",camp:"coal",m:["ש\"ס","shas","התאחדות הספרדים"]},
+ {k:"otzma",n:"עוצמה יהודית",ld:"בן גביר",c:"#ff8a3d",camp:"coal",m:["עוצמה","otzma"]},
+ {k:"rzp",n:"הציונות הדתית-זהות",ld:"סמוטריץ׳ ופייגלין",c:"#f39c12",camp:"coal",m:["ציונות הדתית","זהות","rzp"]},
+ {k:"noam",n:"נעם לישראל",ld:"",c:"#c7a17a",camp:"coal",m:["נעם"]},
  {k:"raam",n:"רע\"ם",ld:"עבאס",c:"#1abc9c",camp:"arab",m:["רע\"ם","רעם","raam","ra'am"]},
- {k:"reserv",n:"המילואימניקים",ld:"הנדל",c:"#b39dfa",camp:"opp",m:["מילואימ","הנדל","reserv"]},
- {k:"amcha",n:"עמך ישראל",ld:"וינטר",c:"#fd79a8",camp:"opp",m:["עמך","וינטר","amcha"]}
+ {k:"reserv",n:"המילואימניקים-הכלכלית",ld:"הנדל וזליכה",c:"#b39dfa",camp:"opp",m:["מילואימ","הנדל","זליכה","reserv"]},
+ {k:"likud",n:"הליכוד",ld:"נתניהו",c:"#3a7bff",camp:"coal",m:["ליכוד","likud"]}
 ];
+/* surplus-vote agreements (as reported; shas-utj from a single source) */
+var AGREE=[["likud","rzp"],["together","yb"],["yashar","dems"],["raam","joint"],["shas","utj"]];
+var ELIGIBLE=7336553; /* official, CEC chair announcement */
 var DESC={
  likud:"המפלגה הגדולה בכנסת היוצאת ומפלגת השלטון. מפלגת ימין לאומית ליברלית, בראשות ראש הממשלה בנימין נתניהו.",
  yashar:"רשימה חדשה בראשות גדי איזנקוט, הרמטכ\"ל לשעבר וחבר כנסת לשעבר מטעם המחנה הממלכתי.",
- together:"רשימה בראשות נפתלי בנט, ראש הממשלה לשעבר, שחזר לפוליטיקה לקראת הבחירות האלה.",
+ together:"רשימה משותפת של נפתלי בנט, ראש הממשלה לשעבר, ויאיר לפיד, ראש הממשלה לשעבר ויו\"ר יש עתיד.",
  dems:"איחוד של מפלגת העבודה ומרצ, בראשות יאיר גולן, סגן הרמטכ\"ל לשעבר. רשימת שמאל-מרכז.",
- joint:"רשימה משותפת של מפלגות ערביות, בראשות יוסף ג׳בארין.",
+ joint:"רשימה משותפת של חד\"ש, תע\"ל ובל\"ד.",
  shas:"מפלגה חרדית ספרדית בהנהגת מועצת חכמי התורה, בראשות אריה דרעי.",
  otzma:"מפלגת ימין דתית לאומית בראשות איתמר בן גביר, השר לביטחון לאומי לשעבר.",
- utj:"איחוד של אגודת ישראל ודגל התורה, הנציגות החרדית האשכנזית. בראש הרשימה יצחק גולדקנופף.",
+ utj:"איחוד של אגודת ישראל ודגל התורה, הנציגות החרדית האשכנזית.",
+ haredi:"רשימה חרדית חדשה. ברוב הסקרים מתחת לאחוז החסימה.",
+ noam:"מפלגת נעם, שהייתה חלק מהממשלה היוצאת. בסקרים מתחת לאחוז החסימה.",
  yb:"מפלגת ימין חילונית בראשות אביגדור ליברמן, שר האוצר והביטחון לשעבר.",
- rzp:"מפלגת הציונות הדתית בראשות בצלאל סמוטריץ׳, שר האוצר, יחד עם זהות.",
+ rzp:"איחוד של הציונות הדתית בראשות בצלאל סמוטריץ׳, שר האוצר, וזהות בראשות משה פייגלין.",
  raam:"הרשימה הערבית המאוחדת, בראשות מנסור עבאס. הייתה חלק מממשלת בנט-לפיד.",
- reserv:"רשימה חדשה של אנשי מילואים, בראשות יועז הנדל, שר התקשורת לשעבר.",
+ reserv:"איחוד של המילואימניקים בראשות יועז הנדל, שר התקשורת לשעבר, והכלכלית בראשות ירון זליכה.",
  amcha:"רשימה חדשה בראשות האלוף (במיל׳) עופר וינטר."
 };
 var BYK={};PARTIES.forEach(function(p){BYK[p.k]=p});
@@ -341,7 +348,14 @@ function allocate(P){
   var qv=q.reduce(function(s,p){return s+p.votes},0);if(!qv)return tot;
   var quota=qv/SEATS,used=0;
   q.forEach(function(p){p.seats=Math.floor(p.votes/quota);used+=p.seats});
-  for(;used<SEATS;used++){var best=null,bv=-1;q.forEach(function(p){var v=p.votes/(p.seats+1);if(v>bv){bv=v;best=p}});best.seats++}
+  /* remainder seats: Bader-Ofer, agreement pairs compete as one unit and then split inside */
+  var units=[],inPair={};
+  AGREE.forEach(function(a){var x=q.filter(function(p){return p.k===a[0]})[0],y=q.filter(function(p){return p.k===a[1]})[0];
+    if(x&&y){units.push([x,y]);inPair[x.k]=inPair[y.k]=1}});
+  q.forEach(function(p){if(!p.k||!inPair[p.k])units.push([p])});
+  var avg=function(u){return u.reduce(function(s,p){return s+p.votes},0)/(u.reduce(function(s,p){return s+p.seats},0)+1)};
+  var best1=function(u){var b=null,bv=-1;u.forEach(function(p){var v=p.votes/(p.seats+1);if(v>bv){bv=v;b=p}});return b};
+  for(;used<SEATS;used++){var bu=null,bv=-1;units.forEach(function(u){var v=avg(u);if(v>bv){bv=v;bu=u}});best1(bu).seats++}
   return tot;
 }
 
@@ -351,10 +365,10 @@ var DEMO_SHARE={};(function(){
   var base={};PARTIES.forEach(function(p,i){base[p.k]=Math.max(AVG[p.k],2.4)*(0.92+rnd(i+3)*0.16)});
   var t=0;for(var k in base)t+=base[k];for(k in base)DEMO_SHARE[k]=base[k]/t;
 })();
-var demoPct=0,VT=4420000;
+var demoPct=0,VT=Math.round(ELIGIBLE*.69);
 function demoResults(){
   var f=demoPct/100;
-  return {live:false,pctCounted:demoPct,turnout:69.2*Math.min(1,.3+f*.7),updated:new Date().toISOString(),
+  return {live:false,pctCounted:demoPct,turnout:69*Math.min(1,.3+f*.7),updated:new Date().toISOString(),
     parties:PARTIES.map(function(p,i){var wob=1+(rnd(i*7+Math.floor(demoPct/4))-.5)*.16*Math.max(0,1-f);
       return {name:p.n,votes:Math.round(VT*f*DEMO_SHARE[p.k]*wob)}})};
 }
@@ -418,12 +432,12 @@ function tween(el,key,to){var from=shown[key]||0;shown[key]=to;var t0=performanc
   (function s(t){var k=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*k);if(k<1)requestAnimationFrame(s)})(t0)}
 function enrich(list){
   return list.map(function(x){var p=matchParty(x.name)||{};
-    return {name:x.name,votes:x.votes||0,k:p.k,color:x.color||p.c||"#8fa0c4",camp:x.camp||p.camp||"o",ld:p.ld||x.letters||""}});
+    return {name:x.name,votes:x.votes||0,off:x.officialSeats,k:p.k,color:x.color||p.c||"#8fa0c4",camp:x.camp||p.camp||"o",ld:p.ld||x.letters||""}});
 }
 var prev=null;
 function renderResults(d){
   var P=enrich(d.parties),tot=allocate(P);
-  $("sCount").textContent=d.pctCounted.toFixed(1)+"%";$("bCount").style.width=d.pctCounted+"%";
+  $("sCount").textContent=(d.pctEstimated?"~":"")+d.pctCounted.toFixed(1)+"%";$("bCount").style.width=d.pctCounted+"%";
   $("sTurn").textContent=(d.turnout||0).toFixed(1)+"%";$("bTurn").style.width=(d.turnout||0)+"%";
   $("sValid").textContent=fmt(tot);
   $("sUpd").textContent=new Date(d.updated).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});
@@ -503,7 +517,7 @@ function renderPolls(){
 function renderParties(){
   $("partyBox").innerHTML=PARTIES.slice().sort(function(a,b){return AVG[b.k]-AVG[a.k]}).map(function(p){
     var vals=POLLS.map(function(x){return x.s[p.k]||0}),mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);
-    return '<div class="pcard" style="border-color:'+p.c+'77"><div class="ph" style="background:linear-gradient(90deg,'+p.c+'33,transparent)"><span class="pdot" style="background:'+p.c+'"></span><div><b>'+p.n+'</b><small>בראשות '+p.ld+'</small></div><div class="pavg"><b style="color:'+p.c+'">'+AVG[p.k].toFixed(1)+'</b><small>ממוצע סקרים</small></div></div>'+
+    return '<div class="pcard" style="border-color:'+p.c+'77"><div class="ph" style="background:linear-gradient(90deg,'+p.c+'33,transparent)"><span class="pdot" style="background:'+p.c+'"></span><div><b>'+p.n+'</b><small>'+(p.ld?'בראשות '+p.ld:'&nbsp;')+'</small></div><div class="pavg"><b style="color:'+p.c+'">'+AVG[p.k].toFixed(1)+'</b><small>ממוצע סקרים</small></div></div>'+
       '<p>'+(DESC[p.k]||"")+'</p><div class="pmeta"><span>טווח בסקרים: '+(mn===mx?mn:mn+"–"+mx)+'</span><span style="color:'+CAMP[p.camp].c+'">'+CAMP[p.camp].n+'</span></div></div>'}).join("");
 }
 
