@@ -437,6 +437,8 @@ function enrich(list){
 var prev=null;
 function renderResults(d){
   var P=enrich(d.parties),tot=allocate(P);
+  /* once the committee publishes seats (final count), show its numbers instead of ours */
+  if(P.length&&P.reduce(function(s,p){return s+(p.off||0)},0)===SEATS)P.forEach(function(p){p.seats=p.off||0});
   $("sCount").textContent=(d.pctEstimated?"~":"")+d.pctCounted.toFixed(1)+"%";$("bCount").style.width=d.pctCounted+"%";
   $("sTurn").textContent=(d.turnout||0).toFixed(1)+"%";$("bTurn").style.width=(d.turnout||0)+"%";
   $("sValid").textContent=fmt(tot);
