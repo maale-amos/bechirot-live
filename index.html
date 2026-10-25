@@ -30,6 +30,9 @@ body{color:var(--tx);font-family:"Heebo","Segoe UI",Arial,sans-serif;line-height
 .rbtn small{color:var(--mut);font-weight:500}
 .rstate{color:var(--mut);font-size:13px}
 .rstate.on{color:#ff6b7a;font-weight:800}
+.vbox{background:#000;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px;max-width:760px}
+.vhead{display:flex;gap:10px;align-items:center;padding:6px 10px;background:#0a1432}.vhead b{flex:1}.vhead span{color:var(--mut);font-size:13px}.vhead button{padding:2px 10px}
+.vframe{position:relative;padding-top:56.25%}.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .modebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .tabs button{white-space:nowrap}
@@ -150,11 +153,14 @@ footer{color:var(--mut);font-size:12px;text-align:center;padding:10px 8px 70px}
   <div class="radio" id="radio">
     <span class="rlbl">🎙️ האזנה לשידור חי</span>
     <button id="rKolChai">▶ קול חי</button>
+    <button id="vKolChai">📺 קול חי בווידאו</button>
     <a href="http://kb.cdnwz.net/kol_barama" target="_blank" rel="noopener" class="rbtn">↗ קול ברמה <small>(נפתח בחלון)</small></a>
     <span id="rState" class="rstate"></span>
     <span id="feedSt" class="rstate" style="margin-inline-start:auto"></span>
     <audio id="aud" preload="none"></audio>
   </div>
+
+  <div class="vbox" id="vbox" style="display:none"><div class="vhead"><b>קול חי · שידור וידאו</b><span id="vSt"></span><button id="vClose">✕</button></div><div class="vframe"><iframe id="vIf" title="קול חי בשידור חי" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div></div>
 
   <div class="modebar">
     <div class="tabs" id="tabs">
@@ -535,6 +541,8 @@ function fetchFeed(){
 }
 function loadFeed(){return fetchFeed().then(function(j){
   lastFeed=j;renderNews(j.news||[]);renderGizra(j.gizra||[]);
+  if(j.kolchai){var was=kcLive&&kcLive.live;kcLive=j.kolchai;kcStatus();if(kcLive.live&&kcLive.videoId&&was===false)flash("קול חי עלה לשידור וידאו חי");
+    if(kcLive.live&&$("vbox").style.display==="block"&&$("vIf").src.indexOf(kcLive.videoId)<0)$("vIf").src=kcSrc()}
   $("feedSt").textContent=(j.fallback?"עדכון מגובה · ":"● מחובר לעדכון חי · ")+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
   if(mode==="live"){if(j.results){renderResults(j.results);renderLocs(j.results.localities)}if(j.exitpolls)renderExit(j.exitpolls)}
   else if(Q.get("demo")!=="1"&&(j.results||j.exitpolls))goLive(true);
@@ -621,6 +629,12 @@ $("mDemo").onclick=runDemo;$("mLive").onclick=function(){goLive(false)};
   };
   a.onerror=function(){if(a.getAttribute("src")){st.textContent="השידור לא זמין כרגע";st.className="rstate";b.textContent="▶ קול חי";b.className=""}};
 })();
+/* Kol Chai video: the cloud feed says when the YouTube channel is live */
+var KC_CHANNEL="UChXGHfE7Vng3I3aiRx4AcQw",kcLive=null;
+function kcSrc(){return kcLive&&kcLive.videoId?"https://www.youtube-nocookie.com/embed/"+kcLive.videoId+"?autoplay=1":"https://www.youtube-nocookie.com/embed/live_stream?channel="+KC_CHANNEL+"&autoplay=1"}
+function kcStatus(){$("vSt").textContent=kcLive&&kcLive.live?"● בשידור עכשיו":"השידור יופיע כאן כשקול חי ישדר בווידאו";$("vKolChai").textContent=kcLive&&kcLive.live?"📺 קול חי בווידאו ● חי":"📺 קול חי בווידאו"}
+$("vKolChai").onclick=function(){$("vbox").style.display="block";$("vIf").src=kcSrc();kcStatus();$("vbox").scrollIntoView({behavior:"smooth",block:"nearest"})};
+$("vClose").onclick=function(){$("vbox").style.display="none";$("vIf").src="about:blank"};
 $("snd").onclick=function(){sound=!sound;this.textContent=sound?"🔊":"🔇";if(sound)chime()};
 Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.onclick=function(){
   Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(x){x.className=x===b?"on":""});

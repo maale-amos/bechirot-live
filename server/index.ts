@@ -17,6 +17,17 @@ const SECTOR_TOWNS = ["בני ברק", "אלעד", "ביתר עילית", "מו�
 
 /*CEC_PARSE*/
 
+// Kol Chai video: the YouTube channel's /live page points at the current live broadcast when there is one.
+async function kolchaiVideo(): Promise<unknown | null> {
+  const r = await get("https://www.youtube.com/@kolchai/live", 8000);
+  if (!r.ok) return null;
+  const h = await r.text();
+  const channelId = (h.match(/"(?:channelId|externalId)":"(UC[\w-]{22})"/) || [])[1] || null;
+  const canon = (h.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/) || [])[1];
+  const live = !!canon && /"isLiveNow":true|"isLive":true/.test(h);
+  return { channelId, videoId: live ? canon : null, live, checked: new Date().toISOString() };
+}
+
 async function cec(): Promise<unknown | null> {
   const nr = await get(CEC_NATIONAL, 8000);
   if (!nr.ok) return null;
@@ -35,7 +46,11 @@ async function cec(): Promise<unknown | null> {
   return buildResults(nat, locs, ELIGIBLE, SECTOR_TOWNS);
 }
 
-type Item = { title: string; link: string; source: string; date: string; id?: number };
+type Item = { title: string; link: string; source: string; date: string; id?: number; full?: string };
+// exit polls are read from flashes posted after this moment (polls close 22:00 Israel time = 19:00Z)
+const EXIT_SINCE = "2026-10-27T18:55:00Z";
+
+/*EXIT_PARSE*/
 const cache = new Map<string, { t: number; v: unknown }>();
 
 async function cached<T>(key: string, secs: number, fn: () => Promise<T | null>): Promise<T | null> {
@@ -67,10 +82,10 @@ async function gizra(): Promise<Item[] | null> {
     if (m.deleted || m.is_ads) continue;
     const t = clean(m.text);
     if (t.length < 8) continue;
-    out.push({ title: t.slice(0, 220), link: "https://hagizra.news/", source: "הגיזרה",
+    out.push({ title: t.slice(0, 220), full: t, link: "https://hagizra.news/", source: "הגיזרה",
       date: new Date(String(m.timestamp).slice(0, 23) + "Z").toISOString(), id: m.id });
   }
-  return out.slice(0, 25);
+  return out.slice(0, 40);
 }
 
 function tag(block: string, name: string): string {
@@ -88,9 +103,10 @@ async function rss(): Promise<Item[] | null> {
     for (const b of r.value.match(/<item>[\s\S]*?<\/item>/g) || []) {
       const lm = b.match(/<link[^>]*>([\s\S]*?)<\/link>/);
       const title = tag(b, "title"), link = lm ? lm[1].replace(/<!\[CDATA\[|\]\]>/g, "").trim() : "", d = new Date(tag(b, "pubDate"));
-      if (!title || !link.startsWith("http") || isNaN(+d) || !hasKey(title) || seen.has(title)) continue;
+      if (!title || !link.startsWith("http") || isNaN(+d) || seen.has(title)) continue;
+      if (!hasKey(title) && !/מדגם/.test(tag(b, "description"))) continue;
       seen.add(title);
-      items.push({ title: title.slice(0, 180), link, source: FEEDS[i][0], date: d.toISOString() });
+      items.push({ title: title.slice(0, 180), full: title + " " + tag(b, "description"), link, source: FEEDS[i][0], date: d.toISOString() });
     }
   });
   return ok ? items : null;
@@ -106,6 +122,8 @@ async function repoJson(name: string): Promise<unknown | null> {
 const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "*" };
 
+const Q_EXIT_SINCE = (req: Request) => new URL(req.url).searchParams.get("exitsince") || EXIT_SINCE;
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
   if (new URL(req.url).searchParams.get("debug") === "1") {
@@ -116,16 +134,24 @@ Deno.serve(async (req) => {
       .catch((e) => s + " ERR " + String(e).slice(0, 80))));
     return new Response(JSON.stringify(st), { headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
   }
-  const [g, n, official, repoRes, ep] = await Promise.all([
+  const [g, n, official, repoRes, ep, kv] = await Promise.all([
     cached("gizra", 10, gizra), cached("rss", 45, rss), cached("cec", 15, cec),
-    cached("results", 15, () => repoJson("results.json")), cached("exit", 30, () => repoJson("exitpolls.json"))]);
+    cached("results", 15, () => repoJson("results.json")), cached("exit", 30, () => repoJson("exitpolls.json")), cached("kolchai", 60, kolchaiVideo)]);
   const res = official || repoRes;
-  const giz = (g as Item[]) || [];
-  const news = ((n as Item[]) || []).concat(giz.filter((x) => hasKey(x.title)))
+  const all = ((g as Item[]) || []).concat((n as Item[]) || []);
+  const auto = collectExitPolls(all.map((x) => ({ text: x.full || x.title, date: x.date, source: x.source }))
+    .sort((a, b) => (a.date < b.date ? 1 : -1)), Q_EXIT_SINCE(req));
+  const giz = ((g as Item[]) || []).slice(0, 25).map(({ full: _f, ...x }) => x);
+  const news = ((n as Item[]) || []).map(({ full: _f, ...x }) => x).concat(giz.filter((x) => hasKey(x.title)))
     .sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 40);
   const body: Record<string, unknown> = { ts: new Date().toISOString(), gizra: giz, news };
   if (res) body.results = res;
-  if (ep) body.exitpolls = ep;
+  // manual exitpolls.json (night task) wins per channel over what was read from flashes
+  const merged: Record<string, unknown> = {};
+  for (const p of ((auto as any)?.polls || [])) merged[p.channel] = p;
+  for (const p of ((ep as any)?.polls || [])) merged[p.channel] = p;
+  if (Object.keys(merged).length) body.exitpolls = { live: true, updated: new Date().toISOString(), polls: Object.values(merged) };
+  if (kv) body.kolchai = kv;
   return new Response(JSON.stringify(body), { headers: { ...CORS, "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "public, max-age=5" } });
 });
